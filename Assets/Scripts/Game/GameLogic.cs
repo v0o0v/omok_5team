@@ -44,11 +44,11 @@ namespace Omok {
         }
 
         public bool PlaceMarker(int x, int y, Constants.PlayerType playerType){
-            if (_board[x, y] != Constants.PlayerType.None)
+            if (_board[y, x] != Constants.PlayerType.None)
                 return false;
 
             blockController.PlaceMarker(x, y, playerType);
-            _board[x, y] = playerType;
+            _board[y, x] = playerType;
             return true;
         }
 

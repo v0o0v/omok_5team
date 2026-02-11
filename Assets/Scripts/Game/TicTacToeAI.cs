@@ -70,28 +70,53 @@ namespace Omok {
         }
 
         public static bool CheckGameWin(Constants.PlayerType playerType, Constants.PlayerType[,] board){
+            // 가로 체크
             for (int row = 0; row < BOARD_SIZE; row++){
-                if (board[row, 0] == playerType &&
-                    board[row, 1] == playerType &&
-                    board[row, 2] == playerType)
-                    return true;
+                for (int col = 0; col <= BOARD_SIZE - 5; col++){
+                    if (board[row, col] == playerType &&
+                        board[row, col + 1] == playerType &&
+                        board[row, col + 2] == playerType &&
+                        board[row, col + 3] == playerType &&
+                        board[row, col + 4] == playerType)
+                        return true;
+                }
             }
 
+            // 세로 체크
             for (int col = 0; col < BOARD_SIZE; col++){
-                if (board[0, col] == playerType &&
-                    board[1, col] == playerType &&
-                    board[2, col] == playerType)
-                    return true;
+                for (int row = 0; row <= BOARD_SIZE - 5; row++){
+                    if (board[row, col] == playerType &&
+                        board[row + 1, col] == playerType &&
+                        board[row + 2, col] == playerType &&
+                        board[row + 3, col] == playerType &&
+                        board[row + 4, col] == playerType)
+                        return true;
+                }
             }
 
-            if (board[0, 0] == playerType &&
-                board[1, 1] == playerType &&
-                board[2, 2] == playerType)
-                return true;
-            if (board[0, 2] == playerType &&
-                board[1, 1] == playerType &&
-                board[2, 0] == playerType)
-                return true;
+            // 대각선 체크 (↘)
+            for (int row = 0; row <= BOARD_SIZE - 5; row++){
+                for (int col = 0; col <= BOARD_SIZE - 5; col++){
+                    if (board[row, col] == playerType &&
+                        board[row + 1, col + 1] == playerType &&
+                        board[row + 2, col + 2] == playerType &&
+                        board[row + 3, col + 3] == playerType &&
+                        board[row + 4, col + 4] == playerType)
+                        return true;
+                }
+            }
+
+            // 대각선 체크 (↙)
+            for (int row = 0; row <= BOARD_SIZE - 5; row++){
+                for (int col = 4; col < BOARD_SIZE; col++){
+                    if (board[row, col] == playerType &&
+                        board[row + 1, col - 1] == playerType &&
+                        board[row + 2, col - 2] == playerType &&
+                        board[row + 3, col - 3] == playerType &&
+                        board[row + 4, col - 4] == playerType)
+                        return true;
+                }
+            }
 
             return false;
         }
