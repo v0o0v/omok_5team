@@ -1,0 +1,55 @@
+﻿using System;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using static Tictactoe.Constants;
+
+namespace Tictactoe {
+
+    public class GameManager : Singleton<GameManager> {
+
+        [SerializeField] private GameObject settingsPanelPrefab;
+        [SerializeField] private GameObject confirmPanelPrefab;
+
+        private Canvas _canvas;
+        private GamePanelController _gamePanelController;
+
+        private GameType _gameType;
+        private GameLogic _gameLogic;
+
+        protected override void OnSceneLoad(Scene scene, LoadSceneMode mode){
+            _canvas = FindFirstObjectByType<Canvas>();
+
+            if (scene.name == SCENE_GAME){
+                BlockController blockController = FindFirstObjectByType<BlockController>();
+                blockController?.InitBlocks();
+                _gamePanelController = FindFirstObjectByType<GamePanelController>();
+                _gameLogic = new GameLogic(_gameType, blockController);
+            }
+        }
+
+        public void SetGameTurn(PlayerType playerTurn){
+            _gamePanelController.SetPlayerTurnPanel(playerTurn);
+        }
+
+        public void OpenSettingsPanel(){
+            GameObject settingPanelObject = Instantiate(settingsPanelPrefab, _canvas.transform);
+            settingPanelObject.GetComponent<SettingsPanelController>().Show();
+        }
+
+        public void OpenConfirmPanel(string message, Action onConfirm){
+            GameObject confirmPanel = Instantiate(confirmPanelPrefab, _canvas.transform);
+            confirmPanel.GetComponent<ConfirmPanelController>().Show(message, onConfirm);
+        }
+
+        public void ChangeToGameScene(GameType gameType){
+            _gameType = gameType;
+            SceneManager.LoadScene("Game");
+        }
+
+        public void ChangeToMainScene(){
+            SceneManager.LoadScene("Main");
+        }
+
+    }
+
+}
