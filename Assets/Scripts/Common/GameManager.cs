@@ -13,7 +13,7 @@ namespace Omok {
         private Canvas _canvas;
         private GamePanelController _gamePanelController;
 
-        private Constants.GameType _gameType;
+        private GameType _gameType;
         private GameLogic _gameLogic;
 
         protected override void OnSceneLoad(Scene scene, LoadSceneMode mode){
@@ -26,7 +26,7 @@ namespace Omok {
             }
         }
 
-        public void SetGameTurn(Constants.PlayerType playerTurn){
+        public void SetGameTurn(PlayerType playerTurn){
             _gamePanelController.SetPlayerTurnPanel(playerTurn);
         }
 
@@ -40,7 +40,7 @@ namespace Omok {
             confirmPanel.GetComponent<ConfirmPanelController>().Show(message, onConfirm);
         }
 
-        public void ChangeToGameScene(Constants.GameType gameType){
+        public void ChangeToGameScene(GameType gameType){
             _gameType = gameType;
             SceneManager.LoadScene("Game");
         }

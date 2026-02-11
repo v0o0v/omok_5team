@@ -7,7 +7,7 @@ namespace Omok {
 
         public BlockController blockController;
 
-        private Constants.PlayerType[,] _board;
+        private PlayerType[,] _board;
 
         public BaseState playerAState;
         public BaseState playerBState;
@@ -16,20 +16,20 @@ namespace Omok {
 
         public enum GameResult { None, Win, Lose, Draw }
 
-        public Constants.PlayerType[,] Board => _board;
+        public PlayerType[,] Board => _board;
 
-        public GameLogic(Constants.GameType gameType, BlockController blockController){
+        public GameLogic(GameType gameType, BlockController blockController){
             gameType = GameType.DualPlay; //TODO 삭제할것
-            
+
             this.blockController = blockController;
-            _board = new Constants.PlayerType[BOARD_SIZE, BOARD_SIZE];
+            _board = new PlayerType[BOARD_SIZE, BOARD_SIZE];
             switch (gameType){
-                case Constants.GameType.SinglePlay:
+                case GameType.SinglePlay:
                     playerAState = new PlayerState(true);
                     // playerBState = new AIState(false);
                     SetState(playerAState);
                     break;
-                case Constants.GameType.DualPlay:
+                case GameType.DualPlay:
                     playerAState = new PlayerState(true);
                     playerBState = new PlayerState(false);
                     SetState(playerAState);
@@ -43,8 +43,8 @@ namespace Omok {
             _currentState?.OnEnter(this);
         }
 
-        public bool PlaceMarker(int x, int y, Constants.PlayerType playerType){
-            if (_board[y, x] != Constants.PlayerType.None)
+        public bool PlaceMarker(int x, int y, PlayerType playerType){
+            if (_board[y, x] != PlayerType.None)
                 return false;
 
             blockController.PlaceMarker(x, y, playerType);
@@ -57,11 +57,11 @@ namespace Omok {
         }
 
         public GameResult CheckGameResult(){
-            if (TicTacToeAI.CheckGameWin(Constants.PlayerType.Player1, _board)){
+            if (TicTacToeAI.CheckGameWin(PlayerType.Player1, _board)){
                 return GameResult.Win;
             }
 
-            if (TicTacToeAI.CheckGameWin(Constants.PlayerType.Player2, _board)){
+            if (TicTacToeAI.CheckGameWin(PlayerType.Player2, _board)){
                 return GameResult.Lose;
             }
 

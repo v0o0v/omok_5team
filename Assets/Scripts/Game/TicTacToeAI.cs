@@ -5,16 +5,16 @@ namespace Omok {
 
     public static class TicTacToeAI {
 
-        public static (int row, int col)? GetBestMove(Constants.PlayerType[,] board){
+        public static (int row, int col)? GetBestMove(PlayerType[,] board){
             float bestScore = float.MinValue;
             (int row, int col) bestMove = (-1, -1);
 
             for (int row = 0; row < board.GetLength(0); row++){
                 for (int col = 0; col < board.GetLength(1); col++){
-                    if (board[row, col] == Constants.PlayerType.None){
-                        board[row, col] = Constants.PlayerType.Player2; // AI의 턴
+                    if (board[row, col] == PlayerType.None){
+                        board[row, col] = PlayerType.Player2; // AI의 턴
                         float score = DoMinimax(board, 0, false);
-                        board[row, col] = Constants.PlayerType.None; // 되돌리기
+                        board[row, col] = PlayerType.None; // 되돌리기
 
                         if (score > bestScore){
                             bestScore = score;
@@ -31,20 +31,20 @@ namespace Omok {
             return null;
         }
 
-        private static float DoMinimax(Constants.PlayerType[,] board, int depth, bool isMaximizing){
+        private static float DoMinimax(PlayerType[,] board, int depth, bool isMaximizing){
             // 게임 결과 확인
-            if (CheckGameWin(Constants.PlayerType.Player1, board)) return -10 + depth;
-            if (CheckGameWin(Constants.PlayerType.Player2, board)) return 10 - depth;
+            if (CheckGameWin(PlayerType.Player1, board)) return -10 + depth;
+            if (CheckGameWin(PlayerType.Player2, board)) return 10 - depth;
             if (CheckGameDraw(board)) return 0;
 
             if (isMaximizing){
                 float bestScore = float.MinValue;
                 for (int row = 0; row < board.GetLength(0); row++){
                     for (int col = 0; col < board.GetLength(1); col++){
-                        if (board[row, col] == Constants.PlayerType.None){
-                            board[row, col] = Constants.PlayerType.Player2; // AI의 턴
+                        if (board[row, col] == PlayerType.None){
+                            board[row, col] = PlayerType.Player2; // AI의 턴
                             float score = DoMinimax(board, depth + 1, false);
-                            board[row, col] = Constants.PlayerType.None; // 되돌리기
+                            board[row, col] = PlayerType.None; // 되돌리기
                             bestScore = Mathf.Max(score, bestScore);
                         }
                     }
@@ -56,10 +56,10 @@ namespace Omok {
                 float bestScore = float.MaxValue;
                 for (int row = 0; row < board.GetLength(0); row++){
                     for (int col = 0; col < board.GetLength(1); col++){
-                        if (board[row, col] == Constants.PlayerType.None){
-                            board[row, col] = Constants.PlayerType.Player1; // 플레이어의 턴
+                        if (board[row, col] == PlayerType.None){
+                            board[row, col] = PlayerType.Player1; // 플레이어의 턴
                             float score = DoMinimax(board, depth + 1, true);
-                            board[row, col] = Constants.PlayerType.None; // 되돌리기
+                            board[row, col] = PlayerType.None; // 되돌리기
                             bestScore = Mathf.Min(score, bestScore);
                         }
                     }
@@ -69,7 +69,7 @@ namespace Omok {
             }
         }
 
-        public static bool CheckGameWin(Constants.PlayerType playerType, Constants.PlayerType[,] board){
+        public static bool CheckGameWin(PlayerType playerType, PlayerType[,] board){
             // 가로 체크
             for (int row = 0; row < BOARD_SIZE; row++){
                 for (int col = 0; col <= BOARD_SIZE - 5; col++){
@@ -121,10 +121,10 @@ namespace Omok {
             return false;
         }
 
-        public static bool CheckGameDraw(Constants.PlayerType[,] board){
+        public static bool CheckGameDraw(PlayerType[,] board){
             for (int row = 0; row < BOARD_SIZE; row++){
                 for (int col = 0; col < BOARD_SIZE; col++){
-                    if (board[row, col] == Constants.PlayerType.None)
+                    if (board[row, col] == PlayerType.None)
                         return false;
                 }
             }

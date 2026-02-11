@@ -14,13 +14,13 @@ namespace Omok {
         [SerializeField] private GameObject blockPrefab;
         private int i = 0, j = 0;
         public Action<int, int> onBlockClicked;
-        public Dictionary<string, Block> blockDictionary = new();
+        // public Dictionary<string, Block> blockDictionary = new();
 
         public void PlaceMarker(int x, int y, Constants.PlayerType playerType){
             GameObject block = Instantiate(blockPrefab, transform);
             block.transform.localPosition = new Vector3(x * xOffset, y * yOffset * -1, 0);
             Block blockComponent = block.GetComponent<Block>();
-            blockDictionary.Add(""+x+"_"+y, blockComponent);
+            // blockDictionary.Add(""+x+"_"+y, blockComponent);
             blockComponent.InitMarker(x, y, playerType);
         }
         
@@ -38,16 +38,7 @@ namespace Omok {
             // 바둑판 격자 위치 계산
             int x = Mathf.RoundToInt(localPos.x / xOffset);
             int y = Mathf.RoundToInt(localPos.y / yOffset) * -1;
-            Debug.Log(x+" "+y);
             onBlockClicked?.Invoke(x, y);
-            
-            // 유효한 범위 체크 (필요시)
-            // if (x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE){
-            //     onBlockClicked?.Invoke(x, y);
-            // }
-            
-            // PlaceMarker(i++,j++, PlayerType.Player1);
-            // onBlockClicked?.Invoke(i++,j++);
         }
 
     }

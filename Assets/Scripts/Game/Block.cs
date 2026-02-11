@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Omok {
 
@@ -10,13 +9,11 @@ namespace Omok {
         [SerializeField] private Sprite whiteStoneSprite;
         private SpriteRenderer spriteRenderer;
 
-        public enum MarkerType { None, Black, White }
-
         private int _x;
         private int _y;
 
         private Action<int, int> _onBlockClicked;
-        
+
         private void Awake(){
             spriteRenderer = GetComponent<SpriteRenderer>();
         }
@@ -25,7 +22,6 @@ namespace Omok {
             _x = x;
             _y = y;
             SetMarker(playerType);
-            // _onBlockClicked = onBlockClicked;
         }
 
         public void SetMarker(Constants.PlayerType markerType){
@@ -41,13 +37,6 @@ namespace Omok {
                     break;
             }
         }
-
-        // private void OnMouseUpAsButton(){
-        //     if (EventSystem.current.IsPointerOverGameObject()){
-        //         return;
-        //     }
-        //     _onBlockClicked?.Invoke(_x, _y);
-        // }
 
     }
 

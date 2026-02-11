@@ -4,10 +4,10 @@ namespace Omok.States {
 
     public class PlayerState : BaseState {
 
-        private Constants.PlayerType _playerType;
+        private PlayerType _playerType;
 
         public PlayerState(bool isFirstPlayer){
-            _playerType = isFirstPlayer ? Constants.PlayerType.Player1 : Constants.PlayerType.Player2;
+            _playerType = isFirstPlayer ? PlayerType.Player1 : PlayerType.Player2;
         }
 
         public override void OnEnter(GameLogic gameLogic){
