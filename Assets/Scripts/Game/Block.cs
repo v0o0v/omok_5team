@@ -2,46 +2,52 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Tictactoe {
+namespace Omok {
 
     public class Block : MonoBehaviour {
 
-        [SerializeField] private Sprite oSprite;
-        [SerializeField] private Sprite xSprite;
-        [SerializeField] private SpriteRenderer markerSpriteRenderer;
+        [SerializeField] private Sprite blackStoneSprite;
+        [SerializeField] private Sprite whiteStoneSprite;
+        private SpriteRenderer spriteRenderer;
 
-        public enum MarkerType { None, O, X }
+        public enum MarkerType { None, Black, White }
 
-        private int _blockIndex;
+        private int _x;
+        private int _y;
 
-        private Action<int> _onBlockClicked;
-
-        public void InitMarker(int blockIndex, Action<int> onBlockClicked){
-            _blockIndex = blockIndex;
-            SetMarker(MarkerType.None);
-            _onBlockClicked = onBlockClicked;
+        private Action<int, int> _onBlockClicked;
+        
+        private void Awake(){
+            spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
-        public void SetMarker(MarkerType markerType){
+        public void InitMarker(int x, int y, Constants.PlayerType playerType){
+            _x = x;
+            _y = y;
+            SetMarker(playerType);
+            // _onBlockClicked = onBlockClicked;
+        }
+
+        public void SetMarker(Constants.PlayerType markerType){
             switch (markerType){
-                case MarkerType.O:
-                    markerSpriteRenderer.sprite = oSprite;
+                case Constants.PlayerType.Player1:
+                    spriteRenderer.sprite = blackStoneSprite;
                     break;
-                case MarkerType.X:
-                    markerSpriteRenderer.sprite = xSprite;
+                case Constants.PlayerType.Player2:
+                    spriteRenderer.sprite = whiteStoneSprite;
                     break;
-                case MarkerType.None:
-                    markerSpriteRenderer.sprite = null;
+                case Constants.PlayerType.None:
+                    spriteRenderer.sprite = null;
                     break;
             }
         }
 
-        private void OnMouseUpAsButton(){
-            if (EventSystem.current.IsPointerOverGameObject()){
-                return;
-            }
-            _onBlockClicked?.Invoke(_blockIndex);
-        }
+        // private void OnMouseUpAsButton(){
+        //     if (EventSystem.current.IsPointerOverGameObject()){
+        //         return;
+        //     }
+        //     _onBlockClicked?.Invoke(_x, _y);
+        // }
 
     }
 

@@ -1,22 +1,22 @@
-﻿using static Tictactoe.Constants;
+﻿using static Omok.Constants;
 
-namespace Tictactoe.States {
+namespace Omok.States {
 
     public class PlayerState : BaseState {
 
-        private PlayerType _playerType;
+        private Constants.PlayerType _playerType;
 
         public PlayerState(bool isFirstPlayer){
-            _playerType = isFirstPlayer ? PlayerType.Player1 : PlayerType.Player2;
+            _playerType = isFirstPlayer ? Constants.PlayerType.Player1 : Constants.PlayerType.Player2;
         }
 
         public override void OnEnter(GameLogic gameLogic){
-            gameLogic.blockController.onBlockClicked = blockIndex => { HandleMove(gameLogic, blockIndex); };
+            gameLogic.blockController.onBlockClicked = (x,y) => { HandleMove(gameLogic, x,y); };
             GameManager.Instance.SetGameTurn(_playerType);
         }
 
-        public override void HandleMove(GameLogic gameLogic, int index){
-            ProcessMove(gameLogic, index, _playerType);
+        public override void HandleMove(GameLogic gameLogic, int x, int y){
+            ProcessMove(gameLogic, x, y, _playerType);
         }
 
         public override void HandleNextTurn(GameLogic gameLogic){

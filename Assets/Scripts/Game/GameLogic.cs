@@ -1,13 +1,13 @@
-﻿using Tictactoe.States;
-using static Tictactoe.Constants;
+﻿using Omok.States;
+using static Omok.Constants;
 
-namespace Tictactoe {
+namespace Omok {
 
     public class GameLogic {
 
         public BlockController blockController;
 
-        private PlayerType[,] _board;
+        private Constants.PlayerType[,] _board;
 
         public BaseState playerAState;
         public BaseState playerBState;
@@ -16,18 +16,20 @@ namespace Tictactoe {
 
         public enum GameResult { None, Win, Lose, Draw }
 
-        public PlayerType[,] Board => _board;
+        public Constants.PlayerType[,] Board => _board;
 
-        public GameLogic(GameType gameType, BlockController blockController){
+        public GameLogic(Constants.GameType gameType, BlockController blockController){
+            gameType = GameType.DualPlay; //TODO 삭제할것
+            
             this.blockController = blockController;
-            _board = new PlayerType[BOARD_SIZE, BOARD_SIZE];
+            _board = new Constants.PlayerType[BOARD_SIZE, BOARD_SIZE];
             switch (gameType){
-                case GameType.SinglePlay:
+                case Constants.GameType.SinglePlay:
                     playerAState = new PlayerState(true);
-                    playerBState = new AIState(false);
+                    // playerBState = new AIState(false);
                     SetState(playerAState);
                     break;
-                case GameType.DualPlay:
+                case Constants.GameType.DualPlay:
                     playerAState = new PlayerState(true);
                     playerBState = new PlayerState(false);
                     SetState(playerAState);
@@ -41,15 +43,12 @@ namespace Tictactoe {
             _currentState?.OnEnter(this);
         }
 
-        public bool PlaceMarker(int index, PlayerType playerType){
-            int row = index / BOARD_SIZE;
-            int col = index % BOARD_SIZE;
-
-            if (_board[row, col] != PlayerType.None)
+        public bool PlaceMarker(int x, int y, Constants.PlayerType playerType){
+            if (_board[x, y] != Constants.PlayerType.None)
                 return false;
 
-            blockController.PlaceMarker(index, playerType);
-            _board[row, col] = playerType;
+            blockController.PlaceMarker(x, y, playerType);
+            _board[x, y] = playerType;
             return true;
         }
 
@@ -58,11 +57,11 @@ namespace Tictactoe {
         }
 
         public GameResult CheckGameResult(){
-            if (TicTacToeAI.CheckGameWin(PlayerType.Player1, _board)){
+            if (TicTacToeAI.CheckGameWin(Constants.PlayerType.Player1, _board)){
                 return GameResult.Win;
             }
 
-            if (TicTacToeAI.CheckGameWin(PlayerType.Player2, _board)){
+            if (TicTacToeAI.CheckGameWin(Constants.PlayerType.Player2, _board)){
                 return GameResult.Lose;
             }
 

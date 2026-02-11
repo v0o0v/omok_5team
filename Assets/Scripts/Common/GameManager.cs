@@ -1,9 +1,9 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static Tictactoe.Constants;
+using static Omok.Constants;
 
-namespace Tictactoe {
+namespace Omok {
 
     public class GameManager : Singleton<GameManager> {
 
@@ -13,7 +13,7 @@ namespace Tictactoe {
         private Canvas _canvas;
         private GamePanelController _gamePanelController;
 
-        private GameType _gameType;
+        private Constants.GameType _gameType;
         private GameLogic _gameLogic;
 
         protected override void OnSceneLoad(Scene scene, LoadSceneMode mode){
@@ -21,13 +21,12 @@ namespace Tictactoe {
 
             if (scene.name == SCENE_GAME){
                 BlockController blockController = FindFirstObjectByType<BlockController>();
-                blockController?.InitBlocks();
                 _gamePanelController = FindFirstObjectByType<GamePanelController>();
                 _gameLogic = new GameLogic(_gameType, blockController);
             }
         }
 
-        public void SetGameTurn(PlayerType playerTurn){
+        public void SetGameTurn(Constants.PlayerType playerTurn){
             _gamePanelController.SetPlayerTurnPanel(playerTurn);
         }
 
@@ -41,7 +40,7 @@ namespace Tictactoe {
             confirmPanel.GetComponent<ConfirmPanelController>().Show(message, onConfirm);
         }
 
-        public void ChangeToGameScene(GameType gameType){
+        public void ChangeToGameScene(Constants.GameType gameType){
             _gameType = gameType;
             SceneManager.LoadScene("Game");
         }

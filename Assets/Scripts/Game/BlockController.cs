@@ -1,24 +1,53 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
-using static Tictactoe.Block;
-using static Tictactoe.Constants;
+using UnityEngine.EventSystems;
+using static Omok.Block;
+using static Omok.Constants;
 
-namespace Tictactoe {
+namespace Omok {
 
     public class BlockController : MonoBehaviour {
 
-        [SerializeField] public Block[] blocks;
+        [SerializeField] private float xOffset = 0.45f;
+        [SerializeField] private float yOffset = 0.45f;
+        [SerializeField] private GameObject blockPrefab;
+        private int i = 0, j = 0;
+        public Action<int, int> onBlockClicked;
+        public Dictionary<string, Block> blockDictionary = new();
 
-        public Action<int> onBlockClicked;
-
-        public void InitBlocks(){
-            for (int i = 0; i < blocks.Length; i++){
-                blocks[i].InitMarker(i, blockIndex => { onBlockClicked?.Invoke(blockIndex); });
-            }
+        public void PlaceMarker(int x, int y, Constants.PlayerType playerType){
+            GameObject block = Instantiate(blockPrefab, transform);
+            block.transform.localPosition = new Vector3(x * xOffset, y * yOffset * -1, 0);
+            Block blockComponent = block.GetComponent<Block>();
+            blockDictionary.Add(""+x+"_"+y, blockComponent);
+            blockComponent.InitMarker(x, y, playerType);
         }
-
-        public void PlaceMarker(int blockIndex, PlayerType playerType){
-            blocks[blockIndex].SetMarker(playerType == PlayerType.Player1 ? MarkerType.O : MarkerType.X);
+        
+        private void OnMouseUpAsButton(){
+            if (EventSystem.current.IsPointerOverGameObject()){
+                return;
+            }
+            
+            // 마우스 월드 좌표 가져오기
+            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            
+            // 로컬 좌표로 변환
+            Vector3 localPos = transform.InverseTransformPoint(mouseWorldPos);
+            
+            // 바둑판 격자 위치 계산
+            int x = Mathf.RoundToInt(localPos.x / xOffset);
+            int y = Mathf.RoundToInt(localPos.y / yOffset) * -1;
+            Debug.Log(x+" "+y);
+            onBlockClicked?.Invoke(x, y);
+            
+            // 유효한 범위 체크 (필요시)
+            // if (x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE){
+            //     onBlockClicked?.Invoke(x, y);
+            // }
+            
+            // PlaceMarker(i++,j++, PlayerType.Player1);
+            // onBlockClicked?.Invoke(i++,j++);
         }
 
     }

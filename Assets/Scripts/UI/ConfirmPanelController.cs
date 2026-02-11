@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace Tictactoe {
+namespace Omok {
 
     public class ConfirmPanelController : PanelController {
 

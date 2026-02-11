@@ -2,7 +2,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-namespace Tictactoe {
+namespace Omok {
 
     [RequireComponent(typeof(CanvasGroup))]
     public class PanelController : MonoBehaviour {

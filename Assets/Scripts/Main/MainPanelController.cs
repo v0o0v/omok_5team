@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
-using static Tictactoe.Constants;
+using static Omok.Constants;
 
-namespace Tictactoe {
+namespace Omok {
 
     public class MainPanelController : MonoBehaviour {
 
         public void onClickSinglePlayButton(){
-            GameManager.Instance.ChangeToGameScene(GameType.SinglePlay);
+            GameManager.Instance.ChangeToGameScene(Constants.GameType.SinglePlay);
         }
 
         public void onClickDualPlayButton(){
-            GameManager.Instance.ChangeToGameScene(GameType.DualPlay);
+            GameManager.Instance.ChangeToGameScene(Constants.GameType.DualPlay);
         }
 
         public void onClickSettingsButton(){

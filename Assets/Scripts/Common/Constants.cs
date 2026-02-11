@@ -1,4 +1,4 @@
-﻿namespace Tictactoe {
+﻿namespace Omok {
 
     public static class Constants {
 
@@ -9,7 +9,7 @@
         
         public enum PlayerType { None, Player1, Player2 }
         
-        public const int BOARD_SIZE = 3;
+        public const int BOARD_SIZE = 15;
 
     }
 

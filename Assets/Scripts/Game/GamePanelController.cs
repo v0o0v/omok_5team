@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using static Tictactoe.Constants;
+using static Omok.Constants;
 
-namespace Tictactoe {
+namespace Omok {
 
     public class GamePanelController : MonoBehaviour {
 
@@ -19,17 +19,17 @@ namespace Tictactoe {
             GameManager.Instance.OpenSettingsPanel();
         }
 
-        public void SetPlayerTurnPanel(PlayerType playerType){
+        public void SetPlayerTurnPanel(Constants.PlayerType playerType){
             switch (playerType){
-                case PlayerType.None:
+                case Constants.PlayerType.None:
                     playerATurnImage.color = Color.white;
                     playerBTurnImage.color = Color.white;
                     break;
-                case PlayerType.Player1:
+                case Constants.PlayerType.Player1:
                     playerATurnImage.color = Color.deepSkyBlue;
                     playerBTurnImage.color = Color.white;
                     break;
-                case PlayerType.Player2:
+                case Constants.PlayerType.Player2:
                     playerATurnImage.color = Color.white;
                     playerBTurnImage.color = Color.deepSkyBlue;
                     break;

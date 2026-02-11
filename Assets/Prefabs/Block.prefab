@@ -175,15 +175,15 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 81d686303bd8c6544be92c1dfdc344ce, type: 3}
-  m_Color: {r: 0.5399145, g: 0.58347446, b: 0.6075471, a: 1}
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 1
+  m_DrawMode: 0
   m_Size: {x: 1.5, y: 1.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!114 &8466587666931368971
 MonoBehaviour:
@@ -197,9 +197,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bf752b8f3f3485fa24a9287ff7b15cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tictactoe.Block
-  oSprite: {fileID: 21300000, guid: ad5c88a7a0e477240a4a2d5dc16a55be, type: 3}
-  xSprite: {fileID: 21300000, guid: 52ca4830bc66c0648b04de2582dd3335, type: 3}
-  markerSpriteRenderer: {fileID: 5211081552129107989}
+  blackStoneSprite: {fileID: -824027187401283259, guid: 0e88c352b04ef2b47b07cc48a5e11e30, type: 3}
+  whiteStoneSprite: {fileID: 9185100545972174240, guid: 076bf60f97e157145b9e471f8e333f44, type: 3}
 --- !u!61 &2344122838884985877
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -207,7 +206,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3443139227024618127}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}

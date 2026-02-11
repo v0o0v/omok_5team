@@ -1,4 +1,4 @@
-﻿namespace Tictactoe {
+﻿namespace Omok {
 
     public class SettingsPanelController : PanelController {
 
