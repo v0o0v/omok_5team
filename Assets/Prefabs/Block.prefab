@@ -199,6 +199,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Tictactoe.Block
   blackStoneSprite: {fileID: -824027187401283259, guid: 0e88c352b04ef2b47b07cc48a5e11e30, type: 3}
   whiteStoneSprite: {fileID: 9185100545972174240, guid: 076bf60f97e157145b9e471f8e333f44, type: 3}
+  soundPlayer: {fileID: 0}
 --- !u!61 &2344122838884985877
 BoxCollider2D:
   m_ObjectHideFlags: 0
