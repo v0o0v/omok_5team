@@ -14,6 +14,9 @@ namespace Omok {
         [SerializeField] private TMPro.TMP_Text playerATurnText;
         [SerializeField] private TMPro.TMP_Text playerBTurnText;
 
+        [SerializeField] private PlayerHud playerAHud;
+        [SerializeField] private PlayerHud playerBHud;
+
         public void OnClickBackButton(){
             GameManager.Instance.OpenConfirmPanel("게임을 종료합니다", () => {
                 GameManager.Instance.ChangeToMainScene();
@@ -29,14 +32,20 @@ namespace Omok {
                 case Constants.PlayerType.None:
                     playerATurnText.color = Color.white;
                     playerBTurnText.color = Color.white;
+                    playerAHud.Activate(false);
+                    playerBHud.Activate(false);
                     break;
                 case Constants.PlayerType.Player1:
                     playerATurnText.color = Color.deepSkyBlue;
                     playerBTurnText.color = Color.white;
+                    playerAHud.Activate(true);
+                    playerBHud.Activate(false);
                     break;
                 case Constants.PlayerType.Player2:
                     playerATurnText.color = Color.white;
                     playerBTurnText.color = Color.deepSkyBlue;
+                    playerAHud.Activate(false);
+                    playerBHud.Activate(true);
                     break;
             }
         }
