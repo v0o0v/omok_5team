@@ -38,6 +38,11 @@ namespace Omok
             return _timerEntries.ContainsKey(index);
         }
 
+        public float GetRemainTime(int index)
+        {
+            return _timerEntries[index].RemainTime;
+        }
+
         public void Start(int index, float time, Action timeOutHandler = null)
         {
             if (_isDestroyed) return;

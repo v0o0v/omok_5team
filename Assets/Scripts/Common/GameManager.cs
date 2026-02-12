@@ -32,10 +32,19 @@ namespace Omok
             {
                 BlockController blockController = FindFirstObjectByType<BlockController>();
                 _gamePanelController = FindFirstObjectByType<GamePanelController>();
-                if(_timer == null)
+                if (_timer == null)
                     _timer = new Omok.Timer(new Time(), _loop);
                 _gameLogic = new GameLogic(_gameType, blockController, _timer);
             }
+        }
+
+        /// <summary>
+        /// 제한시간 타이머를 가져옵니다.
+        /// </summary>
+        /// <returns></returns>
+        public Timer GetTimer()
+        {
+            return _timer;
         }
 
         public void SetGameTurn(PlayerType playerTurn)
