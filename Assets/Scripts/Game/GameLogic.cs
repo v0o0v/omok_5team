@@ -42,9 +42,16 @@ namespace Omok {
         }
 
         public void SetState(BaseState newState){
+            if(_timer.IsRunning(0))
+                _timer.Stop(0);
+
             _currentState?.OnExit(this);
             _currentState = newState;
             _currentState?.OnEnter(this);
+
+            _timer.Start(0, 30, () => { 
+                EndGame(_currentState.GetPlayerType() == PlayerType.Player1 ? GameResult.Win : GameResult.Lose); 
+            });
         }
 
         public bool PlaceMarker(int x, int y, PlayerType playerType){
@@ -58,8 +65,6 @@ namespace Omok {
 
         public void ChangeGameState(){
             SetState(_currentState == playerAState ? playerBState : playerAState);
-
-            _timer.Start(0, 3, () => { EndGame(_currentState.GetPlayerType() == PlayerType.Player1 ? GameResult.Win : GameResult.Lose); });
         }
 
         public GameResult CheckGameResult(){
