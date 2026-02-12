@@ -12,12 +12,23 @@ namespace Omok {
         [SerializeField] private float xOffset = 0.45f;
         [SerializeField] private float yOffset = 0.45f;
         [SerializeField] private GameObject blockPrefab;
+        [SerializeField] private GameObject cursorPrefab;
+        private GameObject prevCursor, _cursor;
         private int i = 0, j = 0;
         public Action<int, int> onBlockClicked;
         // public Dictionary<string, Block> blockDictionary = new();
 
         public void PlaceMarker(int x, int y, Constants.PlayerType playerType){
+            Debug.Log("Place Marker");
             GameObject block = Instantiate(blockPrefab, transform);
+            
+            if(prevCursor !=null ) {
+                Destroy(prevCursor);    // 이전 커서가 있다면 삭제함                
+            } 
+            _cursor = Instantiate(cursorPrefab, transform);
+            _cursor.transform.localPosition = new Vector3(x * xOffset, y * yOffset * -1, 0);
+            prevCursor = _cursor;   // 이전 커서에 저장해둠
+            
             block.transform.localPosition = new Vector3(x * xOffset, y * yOffset * -1, 0);
             Block blockComponent = block.GetComponent<Block>();
             // blockDictionary.Add(""+x+"_"+y, blockComponent);
