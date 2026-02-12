@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 using static Omok.Constants;
 
@@ -6,8 +7,12 @@ namespace Omok {
 
     public class GamePanelController : MonoBehaviour {
 
-        [SerializeField] private Image playerATurnImage;
-        [SerializeField] private Image playerBTurnImage;
+        // 이미지-> 텍스트 필드로 변경 - [leomanic]
+        // [SerializeField] private Image playerATurnImage;
+        // [SerializeField] private Image playerBTurnImage;
+
+        [SerializeField] private TMPro.TMP_Text playerATurnText;
+        [SerializeField] private TMPro.TMP_Text playerBTurnText;
 
         public void OnClickBackButton(){
             GameManager.Instance.OpenConfirmPanel("게임을 종료합니다", () => {
@@ -22,16 +27,16 @@ namespace Omok {
         public void SetPlayerTurnPanel(Constants.PlayerType playerType){
             switch (playerType){
                 case Constants.PlayerType.None:
-                    playerATurnImage.color = Color.white;
-                    playerBTurnImage.color = Color.white;
+                    playerATurnText.color = Color.white;
+                    playerBTurnText.color = Color.white;
                     break;
                 case Constants.PlayerType.Player1:
-                    playerATurnImage.color = Color.deepSkyBlue;
-                    playerBTurnImage.color = Color.white;
+                    playerATurnText.color = Color.deepSkyBlue;
+                    playerBTurnText.color = Color.white;
                     break;
                 case Constants.PlayerType.Player2:
-                    playerATurnImage.color = Color.white;
-                    playerBTurnImage.color = Color.deepSkyBlue;
+                    playerATurnText.color = Color.white;
+                    playerBTurnText.color = Color.deepSkyBlue;
                     break;
             }
         }
