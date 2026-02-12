@@ -50,7 +50,7 @@ namespace Omok {
             _currentState?.OnEnter(this);
 
             _timer.Start(0, 30, () => { 
-                EndGame(_currentState.GetPlayerType() == PlayerType.Player1 ? GameResult.Win : GameResult.Lose); 
+                EndGame(_currentState.GetPlayerType() == PlayerType.Player1 ? GameResult.Lose : GameResult.Win); 
             });
         }
 
