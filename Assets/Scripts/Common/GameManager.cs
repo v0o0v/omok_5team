@@ -3,49 +3,66 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using static Omok.Constants;
 
-namespace Omok {
+namespace Omok
+{
 
-    public class GameManager : Singleton<GameManager> {
+    public class GameManager : Singleton<GameManager>
+    {
 
         [SerializeField] private GameObject settingsPanelPrefab;
         [SerializeField] private GameObject confirmPanelPrefab;
+        [SerializeField] private Loop _loop;
 
         private Canvas _canvas;
         private GamePanelController _gamePanelController;
 
         private GameType _gameType;
         private GameLogic _gameLogic;
+        private Timer _timer;
 
-        protected override void OnSceneLoad(Scene scene, LoadSceneMode mode){
+        private void Start()
+        {
+        }
+
+        protected override void OnSceneLoad(Scene scene, LoadSceneMode mode)
+        {
             _canvas = FindFirstObjectByType<Canvas>();
 
-            if (scene.name == SCENE_GAME){
+            if (scene.name == SCENE_GAME)
+            {
                 BlockController blockController = FindFirstObjectByType<BlockController>();
                 _gamePanelController = FindFirstObjectByType<GamePanelController>();
-                _gameLogic = new GameLogic(_gameType, blockController);
+                if(_timer == null)
+                    _timer = new Omok.Timer(new Time(), _loop);
+                _gameLogic = new GameLogic(_gameType, blockController, _timer);
             }
         }
 
-        public void SetGameTurn(PlayerType playerTurn){
+        public void SetGameTurn(PlayerType playerTurn)
+        {
             _gamePanelController.SetPlayerTurnPanel(playerTurn);
         }
 
-        public void OpenSettingsPanel(){
+        public void OpenSettingsPanel()
+        {
             GameObject settingPanelObject = Instantiate(settingsPanelPrefab, _canvas.transform);
             settingPanelObject.GetComponent<SettingsPanelController>().Show();
         }
 
-        public void OpenConfirmPanel(string message, Action onConfirm){
+        public void OpenConfirmPanel(string message, Action onConfirm)
+        {
             GameObject confirmPanel = Instantiate(confirmPanelPrefab, _canvas.transform);
             confirmPanel.GetComponent<ConfirmPanelController>().Show(message, onConfirm);
         }
 
-        public void ChangeToGameScene(GameType gameType){
+        public void ChangeToGameScene(GameType gameType)
+        {
             _gameType = gameType;
             SceneManager.LoadScene("Game");
         }
 
-        public void ChangeToMainScene(){
+        public void ChangeToMainScene()
+        {
             SceneManager.LoadScene("Main");
         }
 

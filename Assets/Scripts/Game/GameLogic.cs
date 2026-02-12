@@ -13,12 +13,16 @@ namespace Omok {
         public BaseState playerBState;
 
         private BaseState _currentState;
+        private readonly Timer _timer;
 
         public enum GameResult { None, Win, Lose, Draw }
 
         public PlayerType[,] Board => _board;
 
-        public GameLogic(GameType gameType, BlockController blockController){
+        public GameLogic(GameType gameType, BlockController blockController, Timer timer)
+        {
+            _timer = timer;
+
             gameType = GameType.DualPlay; //TODO 삭제할것
 
             this.blockController = blockController;
@@ -38,9 +42,16 @@ namespace Omok {
         }
 
         public void SetState(BaseState newState){
+            if(_timer.IsRunning(0))
+                _timer.Stop(0);
+
             _currentState?.OnExit(this);
             _currentState = newState;
             _currentState?.OnEnter(this);
+
+            _timer.Start(0, 30, () => { 
+                EndGame(_currentState.GetPlayerType() == PlayerType.Player1 ? GameResult.Lose : GameResult.Win); 
+            });
         }
 
         public bool PlaceMarker(int x, int y, PlayerType playerType){

@@ -327,6 +327,7 @@ GameObject:
   m_Component:
   - component: {fileID: 448942575}
   - component: {fileID: 448942574}
+  - component: {fileID: 448942576}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -348,6 +349,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Tictactoe.GameManager
   settingsPanelPrefab: {fileID: 4529054047275262898, guid: 9d3f2ef0a746ff54e82718a931181d9f, type: 3}
   confirmPanelPrefab: {fileID: 4529054047275262898, guid: 9a49553597574914d80ba79cd659578c, type: 3}
+  _loop: {fileID: 448942576}
 --- !u!4 &448942575
 Transform:
   m_ObjectHideFlags: 0
@@ -363,6 +365,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &448942576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 448942573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3474d37b5c3e0f140a8510ecdc259e22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Omok.Loop
 --- !u!1 &478744815
 GameObject:
   m_ObjectHideFlags: 0
