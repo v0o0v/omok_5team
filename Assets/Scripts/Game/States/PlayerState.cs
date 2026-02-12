@@ -3,11 +3,8 @@
 namespace Omok.States {
 
     public class PlayerState : BaseState {
-
-        private PlayerType _playerType;
-
-        public PlayerState(bool isFirstPlayer){
-            _playerType = isFirstPlayer ? PlayerType.Player1 : PlayerType.Player2;
+        public PlayerState(bool isFirstPlayer) : base(isFirstPlayer)
+        {
         }
 
         public override void OnEnter(GameLogic gameLogic){

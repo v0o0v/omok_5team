@@ -13,12 +13,16 @@ namespace Omok {
         public BaseState playerBState;
 
         private BaseState _currentState;
+        private readonly Timer _timer;
 
         public enum GameResult { None, Win, Lose, Draw }
 
         public PlayerType[,] Board => _board;
 
-        public GameLogic(GameType gameType, BlockController blockController){
+        public GameLogic(GameType gameType, BlockController blockController, Timer timer)
+        {
+            _timer = timer;
+
             gameType = GameType.DualPlay; //TODO 삭제할것
 
             this.blockController = blockController;
@@ -54,6 +58,8 @@ namespace Omok {
 
         public void ChangeGameState(){
             SetState(_currentState == playerAState ? playerBState : playerAState);
+
+            _timer.Start(0, 3, () => { EndGame(_currentState.GetPlayerType() == PlayerType.Player1 ? GameResult.Win : GameResult.Lose); });
         }
 
         public GameResult CheckGameResult(){

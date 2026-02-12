@@ -22,7 +22,6 @@ namespace Omok
 
         private void Start()
         {
-            _timer = new Omok.Timer(new Time(), _loop);
         }
 
         protected override void OnSceneLoad(Scene scene, LoadSceneMode mode)
@@ -33,7 +32,9 @@ namespace Omok
             {
                 BlockController blockController = FindFirstObjectByType<BlockController>();
                 _gamePanelController = FindFirstObjectByType<GamePanelController>();
-                _gameLogic = new GameLogic(_gameType, blockController);
+                if(_timer == null)
+                    _timer = new Omok.Timer(new Time(), _loop);
+                _gameLogic = new GameLogic(_gameType, blockController, _timer);
             }
         }
 

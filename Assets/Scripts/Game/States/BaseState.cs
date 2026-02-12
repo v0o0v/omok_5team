@@ -1,6 +1,14 @@
-﻿namespace Omok.States {
+﻿using static Omok.Constants;
+
+namespace Omok.States {
 
     public abstract class BaseState {
+        protected Constants.PlayerType _playerType;
+
+        public BaseState(bool isFirstPlayer)
+        {
+            _playerType = isFirstPlayer ? PlayerType.Player1 : PlayerType.Player2;
+        }
 
         public abstract void OnEnter(GameLogic gameLogic);
         public abstract void HandleMove(GameLogic gameLogic, int x, int y);
@@ -19,6 +27,10 @@
             }
         }
 
+        public Constants.PlayerType GetPlayerType()
+        {
+            return _playerType;
+        }
     }
 
 }
