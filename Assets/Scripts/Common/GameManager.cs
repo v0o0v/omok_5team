@@ -9,14 +9,20 @@ namespace Omok {
 
         [SerializeField] private GameObject settingsPanelPrefab;
         [SerializeField] private GameObject confirmPanelPrefab;
+        [SerializeField] private Loop _loop;
 
         private Canvas _canvas;
         private GamePanelController _gamePanelController;
 
         private GameType _gameType;
         private GameLogic _gameLogic;
+        private Timer _timer;
 
-        protected override void OnSceneLoad(Scene scene, LoadSceneMode mode){
+        private void Start()
+        {
+            _timer = new Omok.Timer(new Time(), _loop);
+        }
+
             _canvas = FindFirstObjectByType<Canvas>();
 
             if (scene.name == SCENE_GAME){
