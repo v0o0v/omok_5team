@@ -5,7 +5,6 @@ using static Omok.Constants;
 
 namespace Omok
 {
-
     public class GameManager : Singleton<GameManager>
     {
 
@@ -34,7 +33,7 @@ namespace Omok
                 _gamePanelController = FindFirstObjectByType<GamePanelController>();
                 if (_timer == null)
                     _timer = new Omok.Timer(new Time(), _loop);
-                _gameLogic = new GameLogic(_gameType, blockController, _timer);
+                _gameLogic = new GameLogic(_gameType, blockController, _timer, _gamePanelController);
             }
         }
 
