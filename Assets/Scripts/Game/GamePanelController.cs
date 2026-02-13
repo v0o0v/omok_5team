@@ -10,14 +10,6 @@ namespace Omok
 
     public class GamePanelController : MonoBehaviour
     {
-
-        // 이미지-> 텍스트 필드로 변경 - [leomanic]
-        // [SerializeField] private Image playerATurnImage;
-        // [SerializeField] private Image playerBTurnImage;
-
-        [SerializeField] private TMPro.TMP_Text playerATurnText;
-        [SerializeField] private TMPro.TMP_Text playerBTurnText;
-
         [SerializeField] private PlayerHud playerAHud;
         [SerializeField] private PlayerHud playerBHud;
 
@@ -51,20 +43,14 @@ namespace Omok
             switch (playerType)
             {
                 case Constants.PlayerType.None:
-                    playerATurnText.color = Color.white;
-                    playerBTurnText.color = Color.white;
                     playerAHud.SetAvatarState(AvatarState.Wait);
                     playerBHud.SetAvatarState(AvatarState.Wait);
                     break;
                 case Constants.PlayerType.Player1:
-                    playerATurnText.color = Color.deepSkyBlue;
-                    playerBTurnText.color = Color.white;
                     playerAHud.SetAvatarState(AvatarState.Think);
                     playerBHud.SetAvatarState(AvatarState.Wait);
                     break;
                 case Constants.PlayerType.Player2:
-                    playerATurnText.color = Color.white;
-                    playerBTurnText.color = Color.deepSkyBlue;
                     playerAHud.SetAvatarState(AvatarState.Wait);
                     playerBHud.SetAvatarState(AvatarState.Think);
                     break;
