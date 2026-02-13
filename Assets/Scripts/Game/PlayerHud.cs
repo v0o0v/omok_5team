@@ -43,6 +43,11 @@ namespace Omok
             _avatarStateActions[avatarState]?.Invoke();
         }
 
+        public void SetAvatarDirection(Vector2 direction)
+        {
+            _avatar.SetDirection(direction);
+        }
+
         private void SetActiveTimerGauge(bool value)
         {
             _progressBar.gameObject.SetActive(value);

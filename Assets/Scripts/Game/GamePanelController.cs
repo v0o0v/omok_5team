@@ -20,6 +20,12 @@ namespace Omok
         [SerializeField] private PlayerHud playerAHud;
         [SerializeField] private PlayerHud playerBHud;
 
+        private void Start()
+        {
+            playerAHud.SetAvatarDirection(Vector2.left);
+            playerBHud.SetAvatarDirection(Vector2.right);
+        }
+
         public void OnClickBackButton()
         {
             GameManager.Instance.OpenConfirmPanel("게임을 종료합니다", () =>
