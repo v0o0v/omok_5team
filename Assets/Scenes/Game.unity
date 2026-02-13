@@ -867,7 +867,9 @@ MonoBehaviour:
   xOffset: 0.45
   yOffset: 0.45
   blockPrefab: {fileID: 3443139227024618127, guid: 9fcfccd285f34cd448c71b8e8e6e2ab0, type: 3}
+  forbiddenMarkPrefab: {fileID: 3824534337398579514, guid: 7451231eefa0607449b473d29409c24f, type: 3}
   cursorPrefab: {fileID: 6291881795980764068, guid: 9f03091b3750fc74a964bd67dbd709d0, type: 3}
+  _forbiddenMarks: []
 --- !u!61 &639654429
 BoxCollider2D:
   m_ObjectHideFlags: 0

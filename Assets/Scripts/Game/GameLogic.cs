@@ -4,10 +4,9 @@ using static Omok.Constants;
 
 namespace Omok
 {
-
     public class GameLogic
     {
-
+        private ForbiddenPositionGetter _forbiddenPositionGetter;
         public BlockController blockController;
         public GamePanelController _gamePanelController;
 
@@ -30,6 +29,8 @@ namespace Omok
 
             gameType = GameType.DualPlay; //TODO 삭제할것
 
+            _forbiddenPositionGetter = new ForbiddenPositionGetter();
+
             this.blockController = blockController;
             _board = new PlayerType[BOARD_SIZE, BOARD_SIZE];
             switch (gameType)
@@ -49,6 +50,7 @@ namespace Omok
 
         public void SetState(BaseState newState)
         {
+            // 기존 구동중인 초읽기 중단
             if (_timer.IsRunning(0))
                 _timer.Stop(0);
 
@@ -56,6 +58,7 @@ namespace Omok
             _currentState = newState;
             _currentState?.OnEnter(this);
 
+            // 초읽기 시작
             _timer.Start(0, 30, () =>
             {
                 EndGame(_currentState.GetPlayerType() == PlayerType.Player1 ? GameResult.Lose : GameResult.Win);
@@ -74,7 +77,13 @@ namespace Omok
 
         public void ChangeGameState()
         {
+            blockController.ClearForbiddenMarks();
+
             SetState(_currentState == playerAState ? playerBState : playerAState);
+
+            var points = _forbiddenPositionGetter.GetForbiddenPosition(_board, _currentState.GetPlayerType());
+            foreach (var (x, y) in points)
+                blockController.PutForbiddenMark(x, y);
         }
 
         public GameResult CheckGameResult()
@@ -114,7 +123,5 @@ namespace Omok
                 , () => { GameManager.Instance.ChangeToMainScene(); }
             );
         }
-
     }
-
 }
