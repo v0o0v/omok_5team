@@ -57,7 +57,7 @@ namespace Omok
             } else if(Input.GetKeyDown(KeyCode.Space))
             {
                 // 빈자리가 아니면 return
-                if (_board[_x, _y] != PlayerType.None)
+                if (_board[_x, _y] != PlayerType.None || IsForbiddenPosition(_x, _y))
                     return;
                     currPlayerType = (currPlayerType == PlayerType.Player1) ? PlayerType.Player2 :  PlayerType.Player1;
                     PlaceMarker(_x, _y, currPlayerType);                
@@ -126,12 +126,16 @@ namespace Omok
             int y = Mathf.RoundToInt(localPos.y / yOffset) * -1;
 
             // 금지 위치 일경우 무시처리
-            if (_forbiddenPositions.Any(entry => entry.x == x && entry.y == y))
+            if (IsForbiddenPosition(x, y))
                 return;
 
             onBlockClicked?.Invoke(x, y);
         }
 
+        private bool IsForbiddenPosition(int x, int y)
+        {
+            return _forbiddenPositions.Any(entry => entry.x == x && entry.y == y);
+        }
     }
 
 }
