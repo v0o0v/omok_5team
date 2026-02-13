@@ -1,4 +1,5 @@
 ﻿using Game;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -64,6 +65,12 @@ namespace Omok
             }
         }
 
+        public void SetAvatarState(PlayerType player, AvatarState state)
+        {
+            if (player == PlayerType.Player1)
+                playerAHud.SetAvatarState(state);
+            if (player == PlayerType.Player2)
+                playerBHud.SetAvatarState(state);
+        }
     }
-
 }

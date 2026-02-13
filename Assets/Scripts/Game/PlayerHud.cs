@@ -1,7 +1,9 @@
 ﻿using Game;
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Omok
 {
@@ -11,6 +13,15 @@ namespace Omok
         private ProgressBar _progressBar;
         [SerializeField]
         private Game.Avatar _avatar;
+        [SerializeField]
+        private TMP_Text _playerNameText;
+        [SerializeField]
+        private Sprite _blackStoneSprite;
+        [SerializeField]
+        private Sprite _whiteStoneSprite;
+        [SerializeField]
+        private Image _stoneImage;
+
         private Dictionary<AvatarState, Action> _avatarStateActions;
 
         public void Awake()
@@ -36,6 +47,16 @@ namespace Omok
                 SetActiveTimerGauge(true);
                 PlayAvatarAnimation(AvatarAnimationID.Think);
             });
+        }
+
+        public void SetPlayerName(string name)
+        {
+            _playerNameText.text = name;
+        }
+
+        public void SetPlayerStone(Constants.PlayerType playerType)
+        {
+            _stoneImage.sprite = playerType == Constants.PlayerType.Player1 ? _blackStoneSprite : _whiteStoneSprite;
         }
 
         public void SetAvatarState(AvatarState avatarState)
