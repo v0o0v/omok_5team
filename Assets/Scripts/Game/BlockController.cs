@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using static Omok.Block;
@@ -20,7 +21,9 @@ namespace Omok
         private int i = 0, j = 0;
         public Action<int, int> onBlockClicked;
         // public Dictionary<string, Block> blockDictionary = new();
-        public List<GameObject> _forbiddenMarks;
+        private List<GameObject> _forbiddenMarks = new();
+        private List<Vector2> _forbiddenPositions = new();
+
 
         public void PlaceMarker(int x, int y, Constants.PlayerType playerType)
         {
@@ -43,11 +46,10 @@ namespace Omok
 
         public void PutForbiddenMark(int x, int y)
         {
-            UnityEngine.Debug.Log($"{x},{y}");
-
             GameObject mark = Instantiate(forbiddenMarkPrefab, transform);
             mark.transform.localPosition = new Vector3(x * xOffset, y * yOffset * -1, 0);
             _forbiddenMarks.Add(mark);
+            _forbiddenPositions.Add(new Vector2(x, y));
         }
 
         public void ClearForbiddenMarks()
@@ -55,6 +57,7 @@ namespace Omok
             foreach (var mark in _forbiddenMarks)
                 Destroy(mark);
             _forbiddenMarks.Clear();
+            _forbiddenPositions.Clear();
         }
 
         private void OnMouseUpAsButton()
@@ -73,6 +76,11 @@ namespace Omok
             // 바둑판 격자 위치 계산
             int x = Mathf.RoundToInt(localPos.x / xOffset);
             int y = Mathf.RoundToInt(localPos.y / yOffset) * -1;
+
+            // 금지 위치 일경우 무시처리
+            if (_forbiddenPositions.Any(entry => entry.x == x && entry.y == y))
+                return;
+
             onBlockClicked?.Invoke(x, y);
         }
 
