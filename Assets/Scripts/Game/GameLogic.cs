@@ -21,6 +21,7 @@ namespace Omok
         public enum GameResult { None, Win, Lose, Draw }
 
         public PlayerType[,] Board => _board;
+        private GameType _gameType;
 
         public GameLogic(GameType gameType, BlockController blockController, Timer timer, GamePanelController gamePanelController)
         {
@@ -30,6 +31,7 @@ namespace Omok
             this.blockController = blockController;
             _board = new PlayerType[BOARD_SIZE, BOARD_SIZE];
             blockController.initBoard(_board);
+            _gameType = gameType;
 
             switch (gameType)
             {
@@ -108,10 +110,18 @@ namespace Omok
 
         public void EndGame(GameResult gameResult)
         {
+            switch(gameResult)
+            {
+                case GameResult.Win:  SoundManager.instance.PlaySFX(Enum_Sfx.WINNING3); break;
+                case GameResult.Lose: if(_gameType == GameType.SinglePlay) SoundManager.instance.PlaySFX(Enum_Sfx.FALL1);
+                                    else SoundManager.instance.PlaySFX(Enum_Sfx.WINNING3); break;
+                case GameResult.Draw: SoundManager.instance.PlaySFX(Enum_Sfx.FALL1);    break;
+            };            
+
             string resultStr = gameResult switch
             {
                 GameResult.Win => "Player1 승리!",
-                GameResult.Lose => "Player2 승리!",
+                GameResult.Lose => _gameType == GameType.SinglePlay? "Player1 패배":"Player2 승리!",
                 GameResult.Draw => "무승부!",
                 _ => ""
             };

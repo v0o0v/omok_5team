@@ -21,6 +21,7 @@ public enum Enum_Sfx
     BLOCKED_STONE,
     WINNING1,
     WINNING2,
+    WINNING3,
 }
 
 public class SoundManager : MonoBehaviour
