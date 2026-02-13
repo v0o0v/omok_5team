@@ -26,18 +26,14 @@ namespace Omok
         {
             _timer = timer;
             _gamePanelController = gamePanelController;
-
-            gameType = GameType.DualPlay; //TODO 삭제할것
-
             _forbiddenPositionGetter = new ForbiddenPositionGetter();
-
             this.blockController = blockController;
             _board = new PlayerType[BOARD_SIZE, BOARD_SIZE];
             switch (gameType)
             {
                 case GameType.SinglePlay:
                     playerAState = new PlayerState(true);
-                    // playerBState = new AIState(false);
+                    playerBState = new AIState(false);
                     SetState(playerAState);
                     break;
                 case GameType.DualPlay:

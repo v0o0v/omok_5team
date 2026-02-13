@@ -1,78 +1,306 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using static Omok.Constants;
 
-namespace Omok {
+namespace Omok
+{
 
-    public static class TicTacToeAI {
+    public static class TicTacToeAI
+    {
 
-        public static (int row, int col)? GetBestMove(PlayerType[,] board){
-            float bestScore = float.MinValue;
-            (int row, int col) bestMove = (-1, -1);
+        const int WIN_SCORE = 10000000;
 
-            for (int row = 0; row < board.GetLength(0); row++){
-                for (int col = 0; col < board.GetLength(1); col++){
-                    if (board[row, col] == PlayerType.None){
-                        board[row, col] = PlayerType.Player2; // AI의 턴
-                        float score = DoMinimax(board, 0, false);
-                        board[row, col] = PlayerType.None; // 되돌리기
+        public static (int x, int y)? GetBestMove(PlayerType[,] board, PlayerType player, int kyu)
+        {
+            var sw = Stopwatch.StartNew();
+            int timeLimit = 2900;
 
-                        if (score > bestScore){
-                            bestScore = score;
-                            bestMove = (row, col);
-                        }
+            var settings = GetLevelSettings(kyu);
+            PlayerType opponent = Opp(player);
+
+            // 이기는 수 있으면 바로 둠
+            var winMove = FindWinningMove(board, player);
+            if (winMove.x != -1)
+                return winMove;
+
+            // 상대 바로 이기는 수 막기
+            var blockMove = FindWinningMove(board, opponent);
+            if (blockMove.x != -1)
+                return blockMove;
+
+            var rand = new Random();
+            (int x, int y) bestMove = (-1, -1);
+
+            for (int depth = 1; depth <= settings.Depth; depth++)
+            {
+                if (sw.ElapsedMilliseconds > timeLimit)
+                    break;
+
+                int bestScore = int.MinValue;
+                var moves = GenerateMoves(board);
+
+                foreach (var move in moves)
+                {
+                    board[move.y, move.x] = player;
+
+                    int score = AlphaBeta(
+                        board,
+                        depth - 1,
+                        int.MinValue,
+                        int.MaxValue,
+                        false,
+                        player,
+                        sw,
+                        timeLimit,
+                        settings,
+                        rand);
+
+                    board[move.y, move.x] = PlayerType.None;
+
+                    if (score > bestScore)
+                    {
+                        bestScore = score;
+                        bestMove = move;
                     }
                 }
             }
 
-            if (bestMove != (-1, -1)){
-                return bestMove;
-            }
-
-            return null;
+            return bestMove;
         }
 
-        private static float DoMinimax(PlayerType[,] board, int depth, bool isMaximizing){
-            // 게임 결과 확인
-            if (CheckGameWin(PlayerType.Player1, board)) return -10 + depth;
-            if (CheckGameWin(PlayerType.Player2, board)) return 10 - depth;
-            if (CheckGameDraw(board)) return 0;
+        static readonly (int dx, int dy)[] dirs =
+        {
+            (1, 0), (0, 1), (1, 1), (1, -1)
+        };
 
-            if (isMaximizing){
-                float bestScore = float.MinValue;
-                for (int row = 0; row < board.GetLength(0); row++){
-                    for (int col = 0; col < board.GetLength(1); col++){
-                        if (board[row, col] == PlayerType.None){
-                            board[row, col] = PlayerType.Player2; // AI의 턴
-                            float score = DoMinimax(board, depth + 1, false);
-                            board[row, col] = PlayerType.None; // 되돌리기
-                            bestScore = Mathf.Max(score, bestScore);
-                        }
-                    }
+        struct LevelSettings
+        {
+
+            public int Depth;
+            public float EvalAccuracy;
+            public float Randomness;
+
+        }
+
+        static LevelSettings GetLevelSettings(int level)
+        {
+            level = Math.Clamp(level, 1, 18);
+
+            return new LevelSettings
+            {
+                Depth = 2 + (18 - level) / 3,
+                EvalAccuracy = 0.4f + (18 - level) * 0.035f,
+                Randomness = level * 0.03f
+            };
+        }
+
+        static int AlphaBeta(
+            PlayerType[,] board,
+            int depth,
+            int alpha,
+            int beta,
+            bool maximizing,
+            PlayerType me,
+            Stopwatch sw,
+            int timeLimit,
+            LevelSettings settings,
+            Random rand)
+        {
+            if (sw.ElapsedMilliseconds > timeLimit)
+                return Evaluate(board, me, settings, rand);
+
+            PlayerType opp = Opp(me);
+
+            if (depth == 0 ||
+                CheckGameWin(me, board) ||
+                CheckGameWin(opp, board))
+                return Evaluate(board, me, settings, rand);
+
+            var moves = GenerateMoves(board);
+
+            if (maximizing)
+            {
+                int value = int.MinValue;
+
+                foreach (var m in moves)
+                {
+                    board[m.y, m.x] = me;
+
+                    value = Math.Max(value,
+                        AlphaBeta(board, depth - 1, alpha, beta, false, me, sw, timeLimit, settings, rand));
+
+                    board[m.y, m.x] = PlayerType.None;
+
+                    alpha = Math.Max(alpha, value);
+                    if (beta <= alpha) break;
                 }
 
-                return bestScore;
+                return value;
             }
-            else{
-                float bestScore = float.MaxValue;
-                for (int row = 0; row < board.GetLength(0); row++){
-                    for (int col = 0; col < board.GetLength(1); col++){
-                        if (board[row, col] == PlayerType.None){
-                            board[row, col] = PlayerType.Player1; // 플레이어의 턴
-                            float score = DoMinimax(board, depth + 1, true);
-                            board[row, col] = PlayerType.None; // 되돌리기
-                            bestScore = Mathf.Min(score, bestScore);
-                        }
-                    }
+            else
+            {
+                int value = int.MaxValue;
+
+                foreach (var m in moves)
+                {
+                    board[m.y, m.x] = opp;
+
+                    value = Math.Min(value,
+                        AlphaBeta(board, depth - 1, alpha, beta, true, me, sw, timeLimit, settings, rand));
+
+                    board[m.y, m.x] = PlayerType.None;
+
+                    beta = Math.Min(beta, value);
+                    if (beta <= alpha) break;
                 }
 
-                return bestScore;
+                return value;
             }
         }
 
-        public static bool CheckGameWin(PlayerType playerType, PlayerType[,] board){
+        static List<(int x, int y)> GenerateMoves(PlayerType[,] board)
+        {
+            var list = new List<(int, int)>();
+            bool hasStone = false;
+
+            for (int y = 0; y < BOARD_SIZE; y++)
+            for (int x = 0; x < BOARD_SIZE; x++)
+            {
+                if (board[y, x] != PlayerType.None)
+                {
+                    hasStone = true;
+
+                    for (int dy = -2; dy <= 2; dy++)
+                    for (int dx = -2; dx <= 2; dx++)
+                    {
+                        int nx = x + dx, ny = y + dy;
+                        if (nx < 0 || ny < 0 || nx >= BOARD_SIZE || ny >= BOARD_SIZE) continue;
+
+                        if (board[ny, nx] == PlayerType.None && !list.Contains((nx, ny)))
+                            list.Add((nx, ny));
+                    }
+                }
+            }
+
+            if (!hasStone)
+                list.Add((BOARD_SIZE / 2, BOARD_SIZE / 2));
+
+            return list;
+        }
+
+        static int Evaluate(PlayerType[,] board, PlayerType me, LevelSettings settings, Random rand)
+        {
+            PlayerType opp = Opp(me);
+
+            int myScore = ScoreFor(board, me);
+            int oppScore = ScoreFor(board, opp);
+
+            int result = myScore - oppScore;
+
+            result = (int)(result * settings.EvalAccuracy);
+
+            if (settings.Randomness > 0)
+                result += (int)((rand.NextDouble() - 0.5) * 2000 * settings.Randomness);
+
+            return result;
+        }
+
+        static int ScoreFor(PlayerType[,] board, PlayerType p)
+        {
+            int score = 0;
+
+            for (int y = 0; y < BOARD_SIZE; y++)
+            for (int x = 0; x < BOARD_SIZE; x++)
+            {
+                if (board[y, x] != p) continue;
+
+                foreach (var d in dirs)
+                    score += EvaluateDir(board, x, y, d.dx, d.dy, p);
+            }
+
+            return score;
+        }
+
+        static int EvaluateDir(PlayerType[,] board, int x, int y, int dx, int dy, PlayerType p)
+        {
+            int count = 0;
+            int open = 0;
+
+            int i = 1;
+            while (true)
+            {
+                int nx = x + dx * i;
+                int ny = y + dy * i;
+                if (nx < 0 || ny < 0 || nx >= BOARD_SIZE || ny >= BOARD_SIZE) break;
+
+                if (board[ny, nx] == p) count++;
+                else
+                {
+                    if (board[ny, nx] == PlayerType.None) open++;
+                    break;
+                }
+
+                i++;
+            }
+
+            i = 1;
+            while (true)
+            {
+                int nx = x - dx * i;
+                int ny = y - dy * i;
+                if (nx < 0 || ny < 0 || nx >= BOARD_SIZE || ny >= BOARD_SIZE) break;
+
+                if (board[ny, nx] == p) count++;
+                else
+                {
+                    if (board[ny, nx] == PlayerType.None) open++;
+                    break;
+                }
+
+                i++;
+            }
+
+            if (count >= 4) return WIN_SCORE;
+            if (count == 3 && open == 2) return 100000;
+            if (count == 3 && open == 1) return 10000;
+            if (count == 2 && open == 2) return 5000;
+            if (count == 2 && open == 1) return 500;
+            if (count == 1 && open == 2) return 100;
+
+            return 10;
+        }
+
+        static PlayerType Opp(PlayerType p)
+            => p == PlayerType.Player1 ? PlayerType.Player2 : PlayerType.Player1;
+
+        static (int x, int y) FindWinningMove(PlayerType[,] board, PlayerType player)
+        {
+            var moves = GenerateMoves(board);
+
+            foreach (var m in moves)
+            {
+                board[m.y, m.x] = player;
+
+                if (CheckGameWin(player, board))
+                {
+                    board[m.y, m.x] = PlayerType.None;
+                    return m;
+                }
+
+                board[m.y, m.x] = PlayerType.None;
+            }
+
+            return (-1, -1);
+        }
+
+        public static bool CheckGameWin(PlayerType playerType, PlayerType[,] board)
+        {
             // 가로 체크
-            for (int row = 0; row < BOARD_SIZE; row++){
-                for (int col = 0; col <= BOARD_SIZE - 5; col++){
+            for (int row = 0; row < BOARD_SIZE; row++)
+            {
+                for (int col = 0; col <= BOARD_SIZE - 5; col++)
+                {
                     if (board[row, col] == playerType &&
                         board[row, col + 1] == playerType &&
                         board[row, col + 2] == playerType &&
@@ -83,8 +311,10 @@ namespace Omok {
             }
 
             // 세로 체크
-            for (int col = 0; col < BOARD_SIZE; col++){
-                for (int row = 0; row <= BOARD_SIZE - 5; row++){
+            for (int col = 0; col < BOARD_SIZE; col++)
+            {
+                for (int row = 0; row <= BOARD_SIZE - 5; row++)
+                {
                     if (board[row, col] == playerType &&
                         board[row + 1, col] == playerType &&
                         board[row + 2, col] == playerType &&
@@ -95,8 +325,10 @@ namespace Omok {
             }
 
             // 대각선 체크 (↘)
-            for (int row = 0; row <= BOARD_SIZE - 5; row++){
-                for (int col = 0; col <= BOARD_SIZE - 5; col++){
+            for (int row = 0; row <= BOARD_SIZE - 5; row++)
+            {
+                for (int col = 0; col <= BOARD_SIZE - 5; col++)
+                {
                     if (board[row, col] == playerType &&
                         board[row + 1, col + 1] == playerType &&
                         board[row + 2, col + 2] == playerType &&
@@ -107,8 +339,10 @@ namespace Omok {
             }
 
             // 대각선 체크 (↙)
-            for (int row = 0; row <= BOARD_SIZE - 5; row++){
-                for (int col = 4; col < BOARD_SIZE; col++){
+            for (int row = 0; row <= BOARD_SIZE - 5; row++)
+            {
+                for (int col = 4; col < BOARD_SIZE; col++)
+                {
                     if (board[row, col] == playerType &&
                         board[row + 1, col - 1] == playerType &&
                         board[row + 2, col - 2] == playerType &&
@@ -121,9 +355,12 @@ namespace Omok {
             return false;
         }
 
-        public static bool CheckGameDraw(PlayerType[,] board){
-            for (int row = 0; row < BOARD_SIZE; row++){
-                for (int col = 0; col < BOARD_SIZE; col++){
+        public static bool CheckGameDraw(PlayerType[,] board)
+        {
+            for (int row = 0; row < BOARD_SIZE; row++)
+            {
+                for (int col = 0; col < BOARD_SIZE; col++)
+                {
                     if (board[row, col] == PlayerType.None)
                         return false;
                 }
