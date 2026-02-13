@@ -90,7 +90,7 @@ public static SoundManager instance;
         if (sfxDict.TryGetValue(sfxType, out var clip))
         {
             sfxSource.PlayOneShot(clip);
-            Debug.LogWarning("SFX found in Dictionary!");
+            Debug.Log("SFX found in Dictionary!");
         }
         else
         {

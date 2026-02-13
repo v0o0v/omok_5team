@@ -1,11 +1,14 @@
-﻿using TMPro;
+﻿using Game;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static Omok.Constants;
 
-namespace Omok {
+namespace Omok
+{
 
-    public class GamePanelController : MonoBehaviour {
+    public class GamePanelController : MonoBehaviour
+    {
 
         // 이미지-> 텍스트 필드로 변경 - [leomanic]
         // [SerializeField] private Image playerATurnImage;
@@ -17,35 +20,40 @@ namespace Omok {
         [SerializeField] private PlayerHud playerAHud;
         [SerializeField] private PlayerHud playerBHud;
 
-        public void OnClickBackButton(){
-            GameManager.Instance.OpenConfirmPanel("게임을 종료합니다", () => {
+        public void OnClickBackButton()
+        {
+            GameManager.Instance.OpenConfirmPanel("게임을 종료합니다", () =>
+            {
                 GameManager.Instance.ChangeToMainScene();
             });
         }
 
-        public void OnClickSettingsButton(){
+        public void OnClickSettingsButton()
+        {
             GameManager.Instance.OpenSettingsPanel();
         }
 
-        public void SetPlayerTurnPanel(Constants.PlayerType playerType){
-            switch (playerType){
+        public void SetPlayerTurnPanel(Constants.PlayerType playerType)
+        {
+            switch (playerType)
+            {
                 case Constants.PlayerType.None:
                     playerATurnText.color = Color.white;
                     playerBTurnText.color = Color.white;
-                    playerAHud.Activate(false);
-                    playerBHud.Activate(false);
+                    playerAHud.SetAvatarState(AvatarState.Wait);
+                    playerBHud.SetAvatarState(AvatarState.Wait);
                     break;
                 case Constants.PlayerType.Player1:
                     playerATurnText.color = Color.deepSkyBlue;
                     playerBTurnText.color = Color.white;
-                    playerAHud.Activate(true);
-                    playerBHud.Activate(false);
+                    playerAHud.SetAvatarState(AvatarState.Think);
+                    playerBHud.SetAvatarState(AvatarState.Wait);
                     break;
                 case Constants.PlayerType.Player2:
                     playerATurnText.color = Color.white;
                     playerBTurnText.color = Color.deepSkyBlue;
-                    playerAHud.Activate(false);
-                    playerBHud.Activate(true);
+                    playerAHud.SetAvatarState(AvatarState.Wait);
+                    playerBHud.SetAvatarState(AvatarState.Think);
                     break;
             }
         }

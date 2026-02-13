@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Game;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Omok
@@ -11,23 +9,59 @@ namespace Omok
     {
         [SerializeField]
         private ProgressBar _progressBar;
-        private Timer _timer;
+        [SerializeField]
+        private Game.Avatar _avatar;
+        private Dictionary<AvatarState, Action> _avatarStateActions;
 
-        public void Activate(bool value)
+        public void Awake()
         {
-            gameObject.SetActive(value);
-            _timer = GameManager.Instance.GetTimer();
+            _avatarStateActions = new Dictionary<AvatarState, Action>();
+            _avatarStateActions.Add(AvatarState.Wait, () =>
+            {
+                SetActiveTimerGauge(false);
+                PlayAvatarAnimation(AvatarAnimationID.Wait);
+            });
+            _avatarStateActions.Add(AvatarState.Win, () =>
+            {
+                SetActiveTimerGauge(false);
+                PlayAvatarAnimation(AvatarAnimationID.Win);
+            });
+            _avatarStateActions.Add(AvatarState.Lose, () =>
+            {
+                SetActiveTimerGauge(false);
+                PlayAvatarAnimation(AvatarAnimationID.Lose);
+            });
+            _avatarStateActions.Add(AvatarState.Think, () =>
+            {
+                SetActiveTimerGauge(true);
+                PlayAvatarAnimation(AvatarAnimationID.Think);
+            });
         }
 
-        public void UpdateTimerGauge(float limitTime, float maxTime)
+        public void SetAvatarState(AvatarState avatarState)
         {
-            _progressBar.SetValue(limitTime, maxTime);
+            _avatarStateActions[avatarState]?.Invoke();
+        }
+
+        private void SetActiveTimerGauge(bool value)
+        {
+            _progressBar.gameObject.SetActive(value);
+        }
+
+        private void PlayAvatarAnimation(string animationID)
+        {
+            _avatar?.PlayAnimation(animationID);
         }
 
         private void Update()
         {
-            if (_timer.IsRunning(0))
-                _progressBar.SetValue(_timer.GetRemainTime(0), 30);
+            if (GetTimer().IsRunning(0))
+                _progressBar.SetValue(GetTimer().GetRemainTime(0), 30);
+        }
+
+        private Timer GetTimer()
+        {
+            return GameManager.Instance.GetTimer();
         }
     }
 }
