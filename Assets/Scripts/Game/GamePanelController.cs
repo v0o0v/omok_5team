@@ -23,6 +23,12 @@ namespace Omok
 
         private void Start()
         {
+            playerAHud.SetPlayerName("Player 1");
+            playerBHud.SetPlayerName("Player 2");
+
+            playerAHud.SetPlayerStone(PlayerType.Player1);
+            playerBHud.SetPlayerStone(PlayerType.Player2);
+
             playerAHud.SetAvatarDirection(Vector2.left);
             playerBHud.SetAvatarDirection(Vector2.right);
         }
