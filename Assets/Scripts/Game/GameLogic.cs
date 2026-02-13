@@ -29,6 +29,8 @@ namespace Omok
             _forbiddenPositionGetter = new ForbiddenPositionGetter();
             this.blockController = blockController;
             _board = new PlayerType[BOARD_SIZE, BOARD_SIZE];
+            blockController.initBoard(_board);
+
             switch (gameType)
             {
                 case GameType.SinglePlay:
