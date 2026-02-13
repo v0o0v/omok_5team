@@ -18,6 +18,7 @@ public enum Enum_Sfx
     PLACE_STONE1,
     PLACE_STONE2,
     PLACE_STONE3,
+    BLOCKED_STONE,
     WINNING1,
     WINNING2,
 }
@@ -90,7 +91,6 @@ public static SoundManager instance;
         if (sfxDict.TryGetValue(sfxType, out var clip))
         {
             sfxSource.PlayOneShot(clip);
-            Debug.Log("SFX found in Dictionary!");
         }
         else
         {

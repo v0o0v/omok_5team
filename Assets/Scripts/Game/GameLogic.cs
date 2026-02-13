@@ -65,8 +65,10 @@ namespace Omok
 
         public bool PlaceMarker(int x, int y, PlayerType playerType)
         {
-            if (_board[y, x] != PlayerType.None)
+            if (_board[y, x] != PlayerType.None) {
+                SoundManager.instance.PlaySFX(Enum_Sfx.BLOCKED_STONE);
                 return false;
+            }
 
             blockController.PlaceMarker(x, y, playerType);
             _board[y, x] = playerType;
