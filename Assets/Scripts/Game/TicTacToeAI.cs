@@ -31,11 +31,6 @@ namespace Omok
             var blockMove = FindWinningMove(board, opponent);
             if (blockMove.x != -1)
                 return blockMove;
-            
-            // 상대 오픈3 바로 막기
-            // var block3 = Check3(board, opponent);
-            // if (block3.x != -1)
-            //     return block3;
 
             (int x, int y) bestMove = (-1, -1);
 
@@ -53,10 +48,7 @@ namespace Omok
                     int.MaxValue,
                     false,
                     player,
-                    sw,
-                    timeLimit,
-                    settings,
-                    rand);
+                    settings);
 
                 board[move.y, move.x] = PlayerType.None;
 
@@ -100,9 +92,9 @@ namespace Omok
 
             return new LevelSettings
             {
-                Depth = Remap(19 - kyu, 1, 18, 3, 7),
-                EvalAccuracy = Remap(19 - kyu, 1, 18, 0.7f, 1.0f),
-                Randomness = Remap(19 - kyu, 1, 18, 0.8f, 1.0f)
+                Depth = Remap(19 - kyu, 1, 18, 1, 3),
+                EvalAccuracy = Remap(19 - kyu, 1, 18, 0.4f, 0.99f),
+                Randomness = kyu * 0.04f
             };
         }
 
@@ -113,20 +105,12 @@ namespace Omok
             int beta,
             bool maximizing,
             PlayerType me,
-            Stopwatch sw,
-            int timeLimit,
-            LevelSettings settings,
-            Random rand)
+            LevelSettings settings)
         {
-            if (sw.ElapsedMilliseconds > timeLimit)
-                return Evaluate(board, me, settings, rand);
-
             PlayerType opp = Opp(me);
 
-            if (depth == 0 ||
-                CheckGameWin(me, board) ||
-                CheckGameWin(opp, board))
-                return Evaluate(board, me, settings, rand);
+            if (depth == 0 || CheckGameWin(me, board) || CheckGameWin(opp, board))
+                return Evaluate(board, me, settings);
 
             var moves = GenerateMoves(board);
 
@@ -138,8 +122,7 @@ namespace Omok
                 {
                     board[m.y, m.x] = me;
 
-                    value = Math.Max(value,
-                        AlphaBeta(board, depth - 1, alpha, beta, false, me, sw, timeLimit, settings, rand));
+                    value = Math.Max(value, AlphaBeta(board, depth - 1, alpha, beta, false, me, settings));
 
                     board[m.y, m.x] = PlayerType.None;
 
@@ -157,8 +140,7 @@ namespace Omok
                 {
                     board[m.y, m.x] = opp;
 
-                    value = Math.Min(value,
-                        AlphaBeta(board, depth - 1, alpha, beta, true, me, sw, timeLimit, settings, rand));
+                    value = Math.Min(value, AlphaBeta(board, depth - 1, alpha, beta, true, me, settings));
 
                     board[m.y, m.x] = PlayerType.None;
 
@@ -182,8 +164,8 @@ namespace Omok
                 {
                     hasStone = true;
 
-                    for (int dy = -2; dy <= 2; dy++)
-                    for (int dx = -2; dx <= 2; dx++)
+                    for (int dy = -1; dy <= 1; dy++)
+                    for (int dx = -1; dx <= 1; dx++)
                     {
                         int nx = x + dx, ny = y + dy;
                         if (nx < 0 || ny < 0 || nx >= BOARD_SIZE || ny >= BOARD_SIZE) continue;
@@ -212,7 +194,7 @@ namespace Omok
             }
         }
 
-        static int Evaluate(PlayerType[,] board, PlayerType me, LevelSettings settings, Random rand)
+        static int Evaluate(PlayerType[,] board, PlayerType me, LevelSettings settings)
         {
             PlayerType opp = Opp(me);
 
@@ -223,8 +205,8 @@ namespace Omok
 
             result = (int)(result * settings.EvalAccuracy);
 
-            // if (settings.Randomness > 0)
-            // result += (int)((rand.NextDouble() - 0.5) * 2000 * settings.Randomness);
+            if (settings.Randomness > 0)
+                result += (int)((rand.NextDouble() - 0.5) * 2000 * settings.Randomness);
 
             return result;
         }
