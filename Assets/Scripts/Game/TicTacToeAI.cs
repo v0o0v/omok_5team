@@ -10,11 +10,14 @@ namespace Omok
     {
 
         const int WIN_SCORE = 10000000;
+        static Random rand = new();
 
         public static (int x, int y)? GetBestMove(PlayerType[,] board, PlayerType player, int kyu)
         {
             var sw = Stopwatch.StartNew();
-            int timeLimit = 2900;
+            kyu = Math.Clamp(kyu, 1, 18);
+            // 1급:3초 ~ 18급:1초 제한시간 비율적으로 조정
+            int timeLimit = Remap(19 - kyu, 1, 18, 1000, 3000);
 
             var settings = GetLevelSettings(kyu);
             PlayerType opponent = Opp(player);
@@ -28,45 +31,53 @@ namespace Omok
             var blockMove = FindWinningMove(board, opponent);
             if (blockMove.x != -1)
                 return blockMove;
+            
+            // 상대 오픈3 바로 막기
+            // var block3 = Check3(board, opponent);
+            // if (block3.x != -1)
+            //     return block3;
 
-            var rand = new Random();
             (int x, int y) bestMove = (-1, -1);
 
-            for (int depth = 1; depth <= settings.Depth; depth++)
+            int bestScore = int.MinValue;
+            var moves = GenerateMoves(board);
+
+            foreach (var move in moves)
             {
-                if (sw.ElapsedMilliseconds > timeLimit)
-                    break;
+                board[move.y, move.x] = player;
 
-                int bestScore = int.MinValue;
-                var moves = GenerateMoves(board);
+                int score = AlphaBeta(
+                    board,
+                    settings.Depth,
+                    int.MinValue,
+                    int.MaxValue,
+                    false,
+                    player,
+                    sw,
+                    timeLimit,
+                    settings,
+                    rand);
 
-                foreach (var move in moves)
+                board[move.y, move.x] = PlayerType.None;
+
+                if (score > bestScore)
                 {
-                    board[move.y, move.x] = player;
-
-                    int score = AlphaBeta(
-                        board,
-                        depth - 1,
-                        int.MinValue,
-                        int.MaxValue,
-                        false,
-                        player,
-                        sw,
-                        timeLimit,
-                        settings,
-                        rand);
-
-                    board[move.y, move.x] = PlayerType.None;
-
-                    if (score > bestScore)
-                    {
-                        bestScore = score;
-                        bestMove = move;
-                    }
+                    bestScore = score;
+                    bestMove = move;
                 }
             }
 
             return bestMove;
+        }
+
+        public static int Remap(int value, int inMin, int inMax, int outMin, int outMax)
+        {
+            return (int)((value - inMin) * (outMax - outMin) / (float)(inMax - inMin) + outMin);
+        }
+
+        public static float Remap(float value, float inMin, float inMax, float outMin, float outMax)
+        {
+            return (value - inMin) / (inMax - inMin) * (outMax - outMin) + outMin;
         }
 
         static readonly (int dx, int dy)[] dirs =
@@ -83,15 +94,15 @@ namespace Omok
 
         }
 
-        static LevelSettings GetLevelSettings(int level)
+        static LevelSettings GetLevelSettings(int kyu)
         {
-            level = Math.Clamp(level, 1, 18);
+            kyu = Math.Clamp(kyu, 1, 18);
 
             return new LevelSettings
             {
-                Depth = 2 + (18 - level) / 3,
-                EvalAccuracy = 0.4f + (18 - level) * 0.035f,
-                Randomness = level * 0.03f
+                Depth = Remap(19 - kyu, 1, 18, 3, 7),
+                EvalAccuracy = Remap(19 - kyu, 1, 18, 0.7f, 1.0f),
+                Randomness = Remap(19 - kyu, 1, 18, 0.8f, 1.0f)
             };
         }
 
@@ -186,7 +197,19 @@ namespace Omok
             if (!hasStone)
                 list.Add((BOARD_SIZE / 2, BOARD_SIZE / 2));
 
+            Shuffle<(int, int)>(list);
             return list;
+        }
+
+        public static void Shuffle<T>(this IList<T> list)
+        {
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = rand.Next(n + 1);
+                (list[k], list[n]) = (list[n], list[k]); // swap
+            }
         }
 
         static int Evaluate(PlayerType[,] board, PlayerType me, LevelSettings settings, Random rand)
@@ -200,8 +223,8 @@ namespace Omok
 
             result = (int)(result * settings.EvalAccuracy);
 
-            if (settings.Randomness > 0)
-                result += (int)((rand.NextDouble() - 0.5) * 2000 * settings.Randomness);
+            // if (settings.Randomness > 0)
+            // result += (int)((rand.NextDouble() - 0.5) * 2000 * settings.Randomness);
 
             return result;
         }
@@ -289,6 +312,67 @@ namespace Omok
                 }
 
                 board[m.y, m.x] = PlayerType.None;
+            }
+
+            return (-1, -1);
+        }
+
+        public static (int x, int y) Check3(PlayerType[,] board, PlayerType playerType)
+        {
+            // 가로 체크
+            for (int row = 0; row < BOARD_SIZE; row++)
+            {
+                for (int col = 0; col <= BOARD_SIZE - 5; col++)
+                {
+                    if (board[row, col] == PlayerType.None &&
+                        board[row, col + 1] == playerType &&
+                        board[row, col + 2] == playerType &&
+                        board[row, col + 3] == playerType &&
+                        board[row, col + 4] == PlayerType.None)
+                        return (col, row);
+                }
+            }
+
+            // 세로 체크
+            for (int col = 0; col < BOARD_SIZE; col++)
+            {
+                for (int row = 0; row <= BOARD_SIZE - 5; row++)
+                {
+                    if (board[row, col] == PlayerType.None &&
+                        board[row + 1, col] == playerType &&
+                        board[row + 2, col] == playerType &&
+                        board[row + 3, col] == playerType &&
+                        board[row + 4, col] == PlayerType.None)
+                        return (col, row);
+                }
+            }
+
+            // 대각선 체크 (↘)
+            for (int row = 0; row <= BOARD_SIZE - 5; row++)
+            {
+                for (int col = 0; col <= BOARD_SIZE - 5; col++)
+                {
+                    if (board[row, col] == PlayerType.None &&
+                        board[row + 1, col + 1] == playerType &&
+                        board[row + 2, col + 2] == playerType &&
+                        board[row + 3, col + 3] == playerType &&
+                        board[row + 4, col + 4] == PlayerType.None)
+                        return (col, row);
+                }
+            }
+
+            // 대각선 체크 (↙)
+            for (int row = 0; row <= BOARD_SIZE - 5; row++)
+            {
+                for (int col = 4; col < BOARD_SIZE; col++)
+                {
+                    if (board[row, col] == PlayerType.None &&
+                        board[row + 1, col - 1] == playerType &&
+                        board[row + 2, col - 2] == playerType &&
+                        board[row + 3, col - 3] == playerType &&
+                        board[row + 4, col - 4] == PlayerType.None)
+                        return (col, row);
+                }
             }
 
             return (-1, -1);
