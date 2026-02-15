@@ -12,6 +12,7 @@ namespace Omok.States
 
         public override async void OnEnter(GameLogic gameLogic)
         {
+            gameLogic.IsInputLocked = true;
             GameManager.Instance.SetGameTurn(_playerType);
             PlayerType[,] board = gameLogic.Board;
             
@@ -19,11 +20,11 @@ namespace Omok.States
             var result = await Task.Run(() => 
                 TicTacToeAI.GetBestMove(board, _playerType, 10)
             );
-            // (int x, int y)? result = TicTacToeAI.GetBestMove(board, _playerType, 10);
             if (result.HasValue)
             {
                 HandleMove(gameLogic, result.Value.x, result.Value.y);
             }
+            gameLogic.IsInputLocked = false;
         }
 
         public override void HandleMove(GameLogic gameLogic, int x, int y)

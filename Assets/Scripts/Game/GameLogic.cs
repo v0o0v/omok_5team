@@ -9,6 +9,7 @@ namespace Omok
         private ForbiddenPositionGetter _forbiddenPositionGetter;
         public BlockController blockController;
         public GamePanelController _gamePanelController;
+        public bool IsInputLocked { get; set; } = false;
 
         private PlayerType[,] _board;
 

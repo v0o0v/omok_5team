@@ -12,7 +12,10 @@ namespace Omok.States {
             GameManager.Instance.SetGameTurn(_playerType);
         }
 
-        public override void HandleMove(GameLogic gameLogic, int x, int y){
+        public override void HandleMove(GameLogic gameLogic, int x, int y)
+        {
+            if (gameLogic.IsInputLocked)
+                return;
             ProcessMove(gameLogic, x, y, _playerType);
         }
 
