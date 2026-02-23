@@ -1,6 +1,7 @@
 ﻿using Game;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +13,8 @@ namespace Omok
         [SerializeField]
         private ProgressBar _progressBar;
         [SerializeField]
+        private GameObject _avatarRoot;
+        [SerializeField]
         private Game.Avatar _avatar;
         [SerializeField]
         private TMP_Text _playerNameText;
@@ -21,6 +24,8 @@ namespace Omok
         private Sprite _whiteStoneSprite;
         [SerializeField]
         private Image _stoneImage;
+        [SerializeField]
+        private PrefabContainer[] _avatarPrefabContainers;
 
         private Dictionary<AvatarState, Action> _avatarStateActions;
 
@@ -67,6 +72,20 @@ namespace Omok
         public void SetAvatarDirection(Vector2 direction)
         {
             _avatar.SetDirection(direction);
+        }
+
+        /// <summary>
+        /// Sets the avatar. If the avatar for the given ID does not exist, the operation is ignored.
+        /// </summary>
+        /// <param name="avatarID">The unique identifier of the avatar.</param>
+        public void SetAvatar(string avatarID)
+        {
+            if (_avatar != null)
+                Destroy(_avatar.gameObject);
+
+            var pf = _avatarPrefabContainers.Where(entry => entry.ID == avatarID).Select(entry => entry.Prefab).FirstOrDefault();
+            var inst = Instantiate(pf, _avatarRoot.transform);
+            _avatar = inst.GetComponent<Game.Avatar>();
         }
 
         private void SetActiveTimerGauge(bool value)

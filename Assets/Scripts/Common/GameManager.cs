@@ -34,7 +34,18 @@ namespace Omok
                 if (_timer == null)
                     _timer = new Omok.Timer(new Time(), _loop);
                 _gameLogic = new GameLogic(_gameType, blockController, _timer, _gamePanelController);
+
+                _gamePanelController.SetAvatar(PlayerType.Player1, AvatarID.Avatar0);
+                SetOpponentAvatar();
             }
+        }
+
+        private void SetOpponentAvatar()
+        {
+            if (_gameType == GameType.SinglePlay)
+                _gamePanelController.SetAvatar(PlayerType.Player2, AvatarID.Avatar1);
+            else
+                _gamePanelController.SetAvatar(PlayerType.Player2, AvatarID.Avatar0);
         }
 
         /// <summary>
