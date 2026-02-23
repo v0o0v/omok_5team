@@ -64,5 +64,18 @@ namespace Omok
             if (player == PlayerType.Player2)
                 playerBHud.SetAvatarState(state);
         }
+
+        /// <summary>
+        /// Sets the avatar for the specified player's HUD.
+        /// </summary>
+        /// <param name="playerType">The type of player (Player1/Player2) to update.</param>
+        /// <param name="avatarID">The unique ID of the avatar to be applied.</param>
+        public void SetAvatar(PlayerType playerType, string avatarID)
+        {
+            if (playerType == PlayerType.Player1)
+                playerAHud.SetAvatar(avatarID);
+            if (playerType == PlayerType.Player2)
+                playerBHud.SetAvatar(avatarID);
+        }
     }
 }

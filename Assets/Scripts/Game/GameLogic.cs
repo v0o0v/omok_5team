@@ -1,4 +1,5 @@
-﻿using Game;
+﻿using System.Collections.Generic;
+using Game;
 using Omok.States;
 using static Omok.Constants;
 
@@ -23,6 +24,7 @@ namespace Omok
 
         public PlayerType[,] Board => _board;
         private GameType _gameType;
+        private List<Move> history;
 
         public GameLogic(GameType gameType, BlockController blockController, Timer timer, GamePanelController gamePanelController)
         {
@@ -33,6 +35,7 @@ namespace Omok
             _board = new PlayerType[BOARD_SIZE, BOARD_SIZE];
             blockController.initBoard(_board);
             _gameType = gameType;
+            history = new List<Move>();
 
             switch (gameType)
             {
@@ -75,6 +78,7 @@ namespace Omok
 
             blockController.PlaceMarker(x, y, playerType);
             _board[y, x] = playerType;
+            history.Add(new Move(x, y, playerType));
             return true;
         }
 
@@ -91,17 +95,17 @@ namespace Omok
 
         public GameResult CheckGameResult()
         {
-            if (TicTacToeAI.CheckGameWin(PlayerType.Player1, _board))
+            if (OmokAI.CheckGameWin(PlayerType.Player1, _board))
             {
                 return GameResult.Win;
             }
 
-            if (TicTacToeAI.CheckGameWin(PlayerType.Player2, _board))
+            if (OmokAI.CheckGameWin(PlayerType.Player2, _board))
             {
                 return GameResult.Lose;
             }
 
-            if (TicTacToeAI.CheckGameDraw(_board))
+            if (OmokAI.CheckGameDraw(_board))
             {
                 return GameResult.Draw;
             }
@@ -111,13 +115,14 @@ namespace Omok
 
         public void EndGame(GameResult gameResult)
         {
-            switch(gameResult)
-            {
-                case GameResult.Win:  SoundManager.instance.PlaySFX(Enum_Sfx.WINNING3); break;
-                case GameResult.Lose: if(_gameType == GameType.SinglePlay) SoundManager.instance.PlaySFX(Enum_Sfx.FALL1);
-                                    else SoundManager.instance.PlaySFX(Enum_Sfx.WINNING3); break;
-                case GameResult.Draw: SoundManager.instance.PlaySFX(Enum_Sfx.FALL1);    break;
-            };            
+            _ = gameResult switch  {              
+
+                    GameResult.Win => ExecuteSequence(() => { SoundManager.instance.PlaySFX(Enum_Sfx.WINNING3); }),
+                    GameResult.Lose =>ExecuteSequence(() => { if(_gameType == GameType.SinglePlay) SoundManager.instance.PlaySFX(Enum_Sfx.FALL1);
+                                        else SoundManager.instance.PlaySFX(Enum_Sfx.WINNING3); }),
+                    GameResult.Draw => ExecuteSequence(() => { SoundManager.instance.PlaySFX(Enum_Sfx.FALL1);  }),
+                    _ => null            
+            };
 
             string resultStr = gameResult switch
             {
@@ -133,6 +138,11 @@ namespace Omok
             GameManager.Instance.OpenConfirmPanel(resultStr
                 , () => { GameManager.Instance.ChangeToMainScene(); }
             );
+            HistoryManager.HistorySave(playerAState, playerBState, resultStr, history);
         }
+
+        // 헬퍼 함수
+        object ExecuteSequence(System.Action action) { action(); return null; }
+
     }
 }
