@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using static Omok.Constants;
 using Random = System.Random;
-using UnityEngine;
 
 namespace Omok
 {
 
-    public static class TicTacToeAI
+    public static class OmokAI
     {
 
         const int WIN_SCORE = 10000000;
