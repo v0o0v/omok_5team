@@ -18,7 +18,7 @@ namespace Omok.States
             
             // AI Turn 에서 화면이 잠시동안 Freeze 되는 버그 수정 (비동기처리) - [leomanic]
             var result = await Task.Run(() => 
-                TicTacToeAI.GetBestMove(board, _playerType, 10)
+                OmokAI.GetBestMove(board, _playerType, 10)
             );
             if (result.HasValue)
             {

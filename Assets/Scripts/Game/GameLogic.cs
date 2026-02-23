@@ -91,17 +91,17 @@ namespace Omok
 
         public GameResult CheckGameResult()
         {
-            if (TicTacToeAI.CheckGameWin(PlayerType.Player1, _board))
+            if (OmokAI.CheckGameWin(PlayerType.Player1, _board))
             {
                 return GameResult.Win;
             }
 
-            if (TicTacToeAI.CheckGameWin(PlayerType.Player2, _board))
+            if (OmokAI.CheckGameWin(PlayerType.Player2, _board))
             {
                 return GameResult.Lose;
             }
 
-            if (TicTacToeAI.CheckGameDraw(_board))
+            if (OmokAI.CheckGameDraw(_board))
             {
                 return GameResult.Draw;
             }
@@ -111,13 +111,14 @@ namespace Omok
 
         public void EndGame(GameResult gameResult)
         {
-            switch(gameResult)
-            {
-                case GameResult.Win:  SoundManager.instance.PlaySFX(Enum_Sfx.WINNING3); break;
-                case GameResult.Lose: if(_gameType == GameType.SinglePlay) SoundManager.instance.PlaySFX(Enum_Sfx.FALL1);
-                                    else SoundManager.instance.PlaySFX(Enum_Sfx.WINNING3); break;
-                case GameResult.Draw: SoundManager.instance.PlaySFX(Enum_Sfx.FALL1);    break;
-            };            
+            _ = gameResult switch  {              
+
+                    GameResult.Win => ExecuteSequence(() => { SoundManager.instance.PlaySFX(Enum_Sfx.WINNING3); }),
+                    GameResult.Lose =>ExecuteSequence(() => { if(_gameType == GameType.SinglePlay) SoundManager.instance.PlaySFX(Enum_Sfx.FALL1);
+                                        else SoundManager.instance.PlaySFX(Enum_Sfx.WINNING3); }),
+                    GameResult.Draw => ExecuteSequence(() => { SoundManager.instance.PlaySFX(Enum_Sfx.FALL1);  }),
+                    _ => null            
+            };
 
             string resultStr = gameResult switch
             {
@@ -134,5 +135,9 @@ namespace Omok
                 , () => { GameManager.Instance.ChangeToMainScene(); }
             );
         }
+
+        // 헬퍼 함수
+        object ExecuteSequence(System.Action action) { action(); return null; }
+
     }
 }
