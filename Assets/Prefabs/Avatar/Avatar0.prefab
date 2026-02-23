@@ -50,10 +50,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 335d69175e678814590c232c84c20254, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Avatar
-  _avatarWin: {fileID: 2003118032331428765, guid: 5510986ec8b28014ab65a62e1d2fa5fc, type: 3}
-  _avatarLose: {fileID: -8249112952961660378, guid: b06a765df017100439686cf77c182da0, type: 3}
-  _avatarThink: {fileID: 3938246355569461059, guid: b4247992dc7900741b52784a10cd0230, type: 3}
-  _avatarWait: {fileID: 2003118032331428765, guid: 5510986ec8b28014ab65a62e1d2fa5fc, type: 3}
+  _avatarWin: {fileID: 21300000, guid: 5510986ec8b28014ab65a62e1d2fa5fc, type: 3}
+  _avatarLose: {fileID: 21300000, guid: b06a765df017100439686cf77c182da0, type: 3}
+  _avatarThink: {fileID: 21300000, guid: b4247992dc7900741b52784a10cd0230, type: 3}
+  _avatarWait: {fileID: 21300000, guid: 5510986ec8b28014ab65a62e1d2fa5fc, type: 3}
   _avatarImage: {fileID: 5689518943926981710}
 --- !u!222 &8370803709984280216
 CanvasRenderer:
