@@ -1,4 +1,5 @@
-﻿using Game;
+﻿using System.Collections.Generic;
+using Game;
 using Omok.States;
 using static Omok.Constants;
 
@@ -23,6 +24,7 @@ namespace Omok
 
         public PlayerType[,] Board => _board;
         private GameType _gameType;
+        private List<Move> history;
 
         public GameLogic(GameType gameType, BlockController blockController, Timer timer, GamePanelController gamePanelController)
         {
@@ -33,6 +35,7 @@ namespace Omok
             _board = new PlayerType[BOARD_SIZE, BOARD_SIZE];
             blockController.initBoard(_board);
             _gameType = gameType;
+            history = new List<Move>();
 
             switch (gameType)
             {
@@ -75,6 +78,7 @@ namespace Omok
 
             blockController.PlaceMarker(x, y, playerType);
             _board[y, x] = playerType;
+            history.Add(new Move(x, y, playerType));
             return true;
         }
 
@@ -134,6 +138,7 @@ namespace Omok
             GameManager.Instance.OpenConfirmPanel(resultStr
                 , () => { GameManager.Instance.ChangeToMainScene(); }
             );
+            HistoryManager.HistorySave(playerAState, playerBState, resultStr, history);
         }
 
         // 헬퍼 함수

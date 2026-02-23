@@ -22,9 +22,6 @@ namespace Omok
                 moves: moves
             );
 
-            // string path = Path.Combine(Application.persistentDataPath, $"save_{now}.json");
-            // string json = JsonConvert.SerializeObject(historySheet, Formatting.Indented);
-            // File.WriteAllText(path, json);
             Save(historySheet, $"save_{now}.json");
         }
 
