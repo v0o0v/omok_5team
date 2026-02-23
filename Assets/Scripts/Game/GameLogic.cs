@@ -37,7 +37,11 @@ namespace Omok
             _gameType = gameType;
             history = new List<Move>();
 
-            switch (gameType)
+        }
+
+        public void Start()
+        {
+            switch (_gameType)
             {
                 case GameType.SinglePlay:
                     playerAState = new PlayerState(true);

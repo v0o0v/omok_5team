@@ -37,6 +37,8 @@ namespace Omok
 
                 _gamePanelController.SetAvatar(PlayerType.Player1, AvatarID.Avatar0);
                 SetOpponentAvatar();
+
+                _gameLogic.Start();
             }
         }
 
