@@ -71,6 +71,12 @@ namespace Omok
             GameObject confirmPanel = Instantiate(confirmPanelPrefab, _canvas.transform);
             confirmPanel.GetComponent<ConfirmPanelController>().Show(message, onConfirm);
         }
+        // Continue 버튼 추가된 ConfirmPanel - [leomanic]
+        public void OpenContinuePanel(string message, Action onConfirm, Action onContinue)
+        {
+            GameObject confirmPanel = Instantiate(confirmPanelPrefab, _canvas.transform);
+            confirmPanel.GetComponent<ConfirmPanelController>().Show(message, onConfirm, onContinue);
+        }
 
         public void ChangeToGameScene(GameType gameType)
         {

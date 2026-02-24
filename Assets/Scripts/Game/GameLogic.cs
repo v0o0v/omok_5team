@@ -139,8 +139,9 @@ namespace Omok
             _gamePanelController.SetAvatarState(PlayerType.Player1, gameResult == GameResult.Win ? AvatarState.Win : AvatarState.Lose);
             _gamePanelController.SetAvatarState(PlayerType.Player2, gameResult == GameResult.Win ? AvatarState.Lose : AvatarState.Win);
 
-            GameManager.Instance.OpenConfirmPanel(resultStr
+            GameManager.Instance.OpenContinuePanel(resultStr
                 , () => { GameManager.Instance.ChangeToMainScene(); }
+                , () => { GameManager.Instance.ChangeToGameScene(_gameType); }  // 계속 진행
             );
             HistoryManager.HistorySave(playerAState, playerBState, resultStr, history);
         }
