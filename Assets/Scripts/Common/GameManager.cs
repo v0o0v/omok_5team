@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static Omok.Constants;
@@ -7,20 +9,24 @@ namespace Omok
 {
     public class GameManager : Singleton<GameManager>
     {
-
         [SerializeField] private GameObject settingsPanelPrefab;
         [SerializeField] private GameObject confirmPanelPrefab;
         [SerializeField] private Loop _loop;
+        [SerializeField] private LocalDataStore _localDataStore;
 
         private Canvas _canvas;
         private GamePanelController _gamePanelController;
 
         private GameType _gameType;
+        private Dictionary<PlayerType, string> _avatarIDs;
+
         private GameLogic _gameLogic;
         private Timer _timer;
 
         private void Start()
         {
+            _avatarIDs = new Dictionary<PlayerType, string>();
+            _timer = new Omok.Timer(new Time(), _loop);
         }
 
         protected override void OnSceneLoad(Scene scene, LoadSceneMode mode)
@@ -31,23 +37,13 @@ namespace Omok
             {
                 BlockController blockController = FindFirstObjectByType<BlockController>();
                 _gamePanelController = FindFirstObjectByType<GamePanelController>();
-                if (_timer == null)
-                    _timer = new Omok.Timer(new Time(), _loop);
-                _gameLogic = new GameLogic(_gameType, blockController, _timer, _gamePanelController);
 
-                _gamePanelController.SetAvatar(PlayerType.Player1, AvatarID.Avatar0);
-                SetOpponentAvatar();
+                _gameLogic = new GameLogic(_gameType, blockController, _timer, _gamePanelController);
+                _gamePanelController.SetAvatar(PlayerType.Player1, _avatarIDs[PlayerType.Player1]);
+                _gamePanelController.SetAvatar(PlayerType.Player2, _avatarIDs[PlayerType.Player2]);
 
                 _gameLogic.Start();
             }
-        }
-
-        private void SetOpponentAvatar()
-        {
-            if (_gameType == GameType.SinglePlay)
-                _gamePanelController.SetAvatar(PlayerType.Player2, AvatarID.Avatar1);
-            else
-                _gamePanelController.SetAvatar(PlayerType.Player2, AvatarID.Avatar0);
         }
 
         /// <summary>
@@ -79,11 +75,23 @@ namespace Omok
         public void ChangeToGameScene(GameType gameType)
         {
             _gameType = gameType;
-            SceneManager.LoadScene("AvatarSelection");
+
+            // Logic: DualPlay always requires selection; SinglePlay requires it only if no AvatarID is set.
+            var isAvatarIDSettedBefore = !string.IsNullOrEmpty(_localDataStore.GetAvatarID());
+            var isSelectAvatarRequired = _gameType == GameType.DualPlay ||
+                (_gameType == GameType.SinglePlay && !isAvatarIDSettedBefore);
+
+            if (isSelectAvatarRequired)
+                SceneManager.LoadScene("AvatarSelection");
+            else
+                SceneManager.LoadScene("Game");
         }
 
-        public void ChangeToGameScene()
+        public void ChangeToGameScene(IReadOnlyDictionary<PlayerType, string> avatarIDs)
         {
+            foreach (var entry in avatarIDs)
+                _avatarIDs[entry.Key] = entry.Value;
+
             SceneManager.LoadScene("Game");
         }
 
