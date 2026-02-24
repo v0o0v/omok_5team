@@ -84,6 +84,8 @@ namespace Omok
 
         public void ChangeToMainScene()
         {
+            // 메인 화면으로 복귀시 타이머 종료
+            _timer.Stop();
             SceneManager.LoadScene("Main");
         }
 
