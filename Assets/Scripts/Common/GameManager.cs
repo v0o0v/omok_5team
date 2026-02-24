@@ -79,11 +79,18 @@ namespace Omok
         public void ChangeToGameScene(GameType gameType)
         {
             _gameType = gameType;
+            SceneManager.LoadScene("AvatarSelection");
+        }
+
+        public void ChangeToGameScene()
+        {
             SceneManager.LoadScene("Game");
         }
 
         public void ChangeToMainScene()
         {
+            // 메인 화면으로 복귀시 타이머 종료
+            _timer.Stop();
             SceneManager.LoadScene("Main");
         }
 
