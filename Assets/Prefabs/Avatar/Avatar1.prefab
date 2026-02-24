@@ -53,7 +53,7 @@ MonoBehaviour:
   _avatarWin: {fileID: 21300000, guid: 132e616b441d5ff41be7994309ce86fe, type: 3}
   _avatarLose: {fileID: 21300000, guid: 496aeb6ba9c6e6241b038e602cdf762a, type: 3}
   _avatarThink: {fileID: 21300000, guid: 6dba38d07ac5bf6469ed603e421bed14, type: 3}
-  _avatarWait: {fileID: 21300000, guid: 132e616b441d5ff41be7994309ce86fe, type: 3}
+  _avatarWait: {fileID: 21300000, guid: 3818662a359b74744b4725695d00369e, type: 3}
   _avatarImage: {fileID: 5689518943926981710}
 --- !u!222 &8370803709984280216
 CanvasRenderer:
