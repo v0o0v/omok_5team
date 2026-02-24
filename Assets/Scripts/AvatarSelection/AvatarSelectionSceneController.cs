@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Omok;
 using UnityEngine;
+using static Omok.Constants;
 
 namespace AvatarSelection
 {
@@ -20,7 +22,11 @@ namespace AvatarSelection
 
         public void OnStartButtonClicked()
         {
-            GameManager.Instance.ChangeToGameScene();
+            var avatarIDs = new Dictionary<PlayerType, string>();
+            foreach (var entry in _panelContainers)
+                avatarIDs[entry.PlayerType] = entry.AvatarSelectionPanel.GetSelectedAvatarID();
+
+            GameManager.Instance.ChangeToGameScene(avatarIDs);
         }
     }
 }

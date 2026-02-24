@@ -338,6 +338,7 @@ GameObject:
   - component: {fileID: 448942575}
   - component: {fileID: 448942574}
   - component: {fileID: 448942576}
+  - component: {fileID: 448942577}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -360,6 +361,7 @@ MonoBehaviour:
   settingsPanelPrefab: {fileID: 4529054047275262898, guid: 9d3f2ef0a746ff54e82718a931181d9f, type: 3}
   confirmPanelPrefab: {fileID: 4529054047275262898, guid: 9a49553597574914d80ba79cd659578c, type: 3}
   _loop: {fileID: 448942576}
+  _localDataStore: {fileID: 448942577}
 --- !u!4 &448942575
 Transform:
   m_ObjectHideFlags: 0
@@ -387,6 +389,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3474d37b5c3e0f140a8510ecdc259e22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Omok.Loop
+--- !u!114 &448942577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 448942573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f964c7df68f32a744bcf3829872964ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Omok.LocalDataStore
 --- !u!1 &478744815
 GameObject:
   m_ObjectHideFlags: 0
