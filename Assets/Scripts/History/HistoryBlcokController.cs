@@ -15,7 +15,8 @@ namespace Omok
 
         private PlayerType[,] _board = new PlayerType[BOARD_SIZE, BOARD_SIZE];
         private int index = 0;
-        private HistorySheet historySheet; 
+        private HistorySheet historySheet;
+        private List<GameObject> placedBlocks = new List<GameObject>(); 
 
         private void Start()
         {
@@ -43,12 +44,30 @@ namespace Omok
             }
         }
 
+        public void ProceedOneBackStep()
+        {
+            if (index <= 0) return;
+            index--;
+            GameObject lastBlock = placedBlocks[placedBlocks.Count - 1];
+            placedBlocks.RemoveAt(placedBlocks.Count - 1);
+            Destroy(lastBlock);
+        }
+        
+        public void ProceedAllBackStep()
+        {
+            while (index > 0)
+            {
+                ProceedOneBackStep();
+            }
+        }
+
         public void PlaceMarker(int x, int y, PlayerType playerType)
         {
             GameObject block = Instantiate(blockPrefab, transform);
             block.transform.localPosition = new Vector3(x * xOffset, y * yOffset * -1, 0);
             HistoryBlock blockComponent = block.GetComponent<HistoryBlock>();
             blockComponent.InitMarker(x, y, playerType, index);
+            placedBlocks.Add(block);
         }
 
     }
