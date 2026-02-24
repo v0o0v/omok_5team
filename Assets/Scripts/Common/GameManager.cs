@@ -84,7 +84,12 @@ namespace Omok
             if (isSelectAvatarRequired)
                 SceneManager.LoadScene("AvatarSelection");
             else
+            {
+                _avatarIDs[PlayerType.Player1] = _localDataStore.GetAvatarID();
+                _avatarIDs[PlayerType.Player2] = _localDataStore.GetAvatarID();
+
                 SceneManager.LoadScene("Game");
+            }
         }
 
         public void ChangeToGameScene(IReadOnlyDictionary<PlayerType, string> avatarIDs)
