@@ -20,7 +20,7 @@ namespace AvatarSelection
 
         public void OnStartButtonClicked()
         {
-            GameManager.Instance.ChangeToGameScene(Constants.GameType.SinglePlay);
+            GameManager.Instance.ChangeToGameScene();
         }
     }
 }
