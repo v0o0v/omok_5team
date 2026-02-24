@@ -92,6 +92,8 @@ namespace Omok
             foreach (var entry in avatarIDs)
                 _avatarIDs[entry.Key] = entry.Value;
 
+            _localDataStore.SetAvatarID(avatarIDs[PlayerType.Player1]);
+
             SceneManager.LoadScene("Game");
         }
 
