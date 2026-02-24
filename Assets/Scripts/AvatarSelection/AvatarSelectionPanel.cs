@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using Game;
 using TMPro;
 using UnityEngine;
@@ -20,8 +21,13 @@ namespace AvatarSelection
         {
             [SerializeField]
             public string Name;
+
+            /// <summary>
+            /// The unique identifier for the avatar. Use constants defined in the <see cref="AvatarID"/> class.
+            /// </summary>
             [SerializeField]
             public string ID;
+
             [SerializeField]
             public Game.Avatar Avatar;
         }
@@ -66,6 +72,11 @@ namespace AvatarSelection
 
             _avatarContainers[index].Avatar.PlayAnimation(AvatarAnimationID.Wait);
             _nameText.text = _avatarContainers[index].Name;
+        }
+
+        public string GetSelectedAvatarID()
+        {
+            return _avatarContainers[_index].ID;
         }
     }
 }
