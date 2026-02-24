@@ -1,5 +1,6 @@
 ﻿using static Omok.Constants;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Omok.States
 {
@@ -27,8 +28,11 @@ namespace Omok.States
             gameLogic.IsInputLocked = false;
         }
 
-        public override void HandleMove(GameLogic gameLogic, int x, int y)
+        public override async void HandleMove(GameLogic gameLogic, int x, int y)
         {
+            // AI 턴에서 속도가 너무 빠른 문제
+            // 유니티 게임 시간 기준으로 0.8초 지연
+            await Awaitable.WaitForSecondsAsync(0.8f);
             ProcessMove(gameLogic, x, y, _playerType);
         }
 
