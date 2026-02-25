@@ -78,6 +78,7 @@ public static SoundManager instance;
         {
             bgmSource.clip = clip;
             bgmSource.loop = true; // 배경음악은 기본적으로 반복 재생
+            bgmSource.volume = 0.2f;    // 기본 20% 볼륨
             bgmSource.Play();
         }
         else
