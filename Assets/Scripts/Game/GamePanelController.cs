@@ -23,6 +23,9 @@ namespace Omok
 
             playerAHud.SetAvatarDirection(Vector2.left);
             playerBHud.SetAvatarDirection(Vector2.right);
+
+            Debug.Log("Playing BGM");
+            SoundManager.instance.PlayBGM(Enum_Bgm.GAME_BACKGOUND);
         }
 
         public void OnClickBackButton()
