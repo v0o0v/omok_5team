@@ -85,6 +85,7 @@ namespace AvatarSelection
                 if (container.ID != avatarID)
                     continue;
 
+                _index = index;
                 ShowAvatar(index);
                 return;
             }
