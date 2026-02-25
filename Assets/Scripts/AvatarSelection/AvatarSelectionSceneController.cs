@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Omok;
 using UnityEngine;
 using static Omok.Constants;
@@ -27,6 +28,12 @@ namespace AvatarSelection
                 avatarIDs[entry.PlayerType] = entry.AvatarSelectionPanel.GetSelectedAvatarID();
 
             GameManager.Instance.ChangeToGameScene(avatarIDs);
+        }
+
+        public void SetAvatar(PlayerType playerType, string avatarID)
+        {
+            var container = _panelContainers.FirstOrDefault(entry => entry.PlayerType == playerType);
+            container.AvatarSelectionPanel.SetAvatar(avatarID);
         }
     }
 }

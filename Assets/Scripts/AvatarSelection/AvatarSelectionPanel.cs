@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using Game;
 using TMPro;
@@ -30,11 +31,6 @@ namespace AvatarSelection
 
             [SerializeField]
             public Game.Avatar Avatar;
-        }
-
-        private void Start()
-        {
-            ShowAvatar(_index);
         }
 
         /// <summary>
@@ -77,6 +73,19 @@ namespace AvatarSelection
         public string GetSelectedAvatarID()
         {
             return _avatarContainers[_index].ID;
+        }
+
+        public void SetAvatar(string avatarID)
+        {
+            for (var index = 0; index < _avatarContainers.Count(); index++)
+            {
+                var container = _avatarContainers[index];
+                if (container.ID != avatarID)
+                    continue;
+
+                ShowAvatar(index);
+                return;
+            }
         }
     }
 }

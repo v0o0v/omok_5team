@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AvatarSelection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static Omok.Constants;
@@ -43,6 +44,16 @@ namespace Omok
                 _gamePanelController.SetAvatar(PlayerType.Player2, _avatarIDs[PlayerType.Player2]);
 
                 _gameLogic.Start();
+            }
+            else if (scene.name == SCENE_AVATAR_SELECTION)
+            {
+                var avatarID = _localDataStore.GetAvatarID();
+                if (avatarID != null)
+                {
+                    var ctrl = FindFirstObjectByType<AvatarSelectionSceneController>();
+                    ctrl.SetAvatar(PlayerType.Player1, avatarID);
+                    ctrl.SetAvatar(PlayerType.Player2, AvatarID.Avatar0);
+                }
             }
         }
 
