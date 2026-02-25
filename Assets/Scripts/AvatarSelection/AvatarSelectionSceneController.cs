@@ -27,6 +27,7 @@ namespace AvatarSelection
             foreach (var entry in _panelContainers)
                 avatarIDs[entry.PlayerType] = entry.AvatarSelectionPanel.GetSelectedAvatarID();
 
+            SoundManager.instance.PlaySFX(Enum_Sfx.PLACE_STONE3);
             GameManager.Instance.ChangeToGameScene(avatarIDs);
         }
 
