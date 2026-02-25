@@ -47,12 +47,18 @@ namespace Omok
             }
             else if (scene.name == SCENE_AVATAR_SELECTION)
             {
+                var ctrl = FindFirstObjectByType<AvatarSelectionSceneController>();
+
                 var avatarID = _localDataStore.GetAvatarID();
-                if (avatarID != null)
-                {
-                    var ctrl = FindFirstObjectByType<AvatarSelectionSceneController>();
-                    ctrl.SetAvatar(PlayerType.Player1, avatarID);
+                ctrl.SetAvatar(PlayerType.Player1, avatarID == null ? AvatarID.Avatar0 : avatarID);
+                
+                if (_gameType == GameType.DualPlay)
                     ctrl.SetAvatar(PlayerType.Player2, AvatarID.Avatar0);
+
+                if (_gameType == GameType.SinglePlay)
+                {
+                    ctrl.SetAvatar(PlayerType.Player2, AvatarID.Avatar4);
+                    ctrl.DisableSelection(PlayerType.Player2);
                 }
             }
         }

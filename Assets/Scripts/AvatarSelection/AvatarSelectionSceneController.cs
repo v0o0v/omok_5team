@@ -35,5 +35,11 @@ namespace AvatarSelection
             var container = _panelContainers.FirstOrDefault(entry => entry.PlayerType == playerType);
             container.AvatarSelectionPanel.SetAvatar(avatarID);
         }
+
+        public void DisableSelection(PlayerType playerType)
+        {
+            var container = _panelContainers.FirstOrDefault(entry => entry.PlayerType == playerType);
+            container.AvatarSelectionPanel.DisableSelection();
+        }
     }
 }

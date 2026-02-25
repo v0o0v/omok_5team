@@ -13,6 +13,10 @@ namespace AvatarSelection
         private int _index;
         [SerializeField]
         private TMP_Text _nameText;
+        [SerializeField]
+        private GameObject _nextButton;
+        [SerializeField]
+        private GameObject _prevButton;
 
         [SerializeField]
         private AvatarContainer[] _avatarContainers;
@@ -89,6 +93,12 @@ namespace AvatarSelection
                 ShowAvatar(index);
                 return;
             }
+        }
+
+        public void DisableSelection()
+        {
+            _nextButton.gameObject.SetActive(false);
+            _prevButton.gameObject.SetActive(false);
         }
     }
 }
