@@ -41,7 +41,11 @@ namespace Omok
 
                 _gameLogic = new GameLogic(_gameType, blockController, _timer, _gamePanelController);
                 _gamePanelController.SetAvatar(PlayerType.Player1, _avatarIDs[PlayerType.Player1]);
-                _gamePanelController.SetAvatar(PlayerType.Player2, _avatarIDs[PlayerType.Player2]);
+
+                if (_gameType == GameType.DualPlay)
+                    _gamePanelController.SetAvatar(PlayerType.Player2, _avatarIDs[PlayerType.Player2]);
+                if (_gameType == GameType.SinglePlay)
+                    _gamePanelController.SetAvatar(PlayerType.Player2, AvatarID.Avatar4);
 
                 _gameLogic.Start();
             }
@@ -51,7 +55,7 @@ namespace Omok
 
                 var avatarID = _localDataStore.GetAvatarID();
                 ctrl.SetAvatar(PlayerType.Player1, avatarID == null ? AvatarID.Avatar0 : avatarID);
-                
+
                 if (_gameType == GameType.DualPlay)
                     ctrl.SetAvatar(PlayerType.Player2, AvatarID.Avatar0);
 
