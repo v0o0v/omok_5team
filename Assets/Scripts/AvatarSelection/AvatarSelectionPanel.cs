@@ -42,6 +42,7 @@ namespace AvatarSelection
             if (_index >= _avatarContainers.Length)
                 _index = 0;
 
+            SoundManager.instance.PlaySFX(Enum_Sfx.PLACE_STONE3);
             ShowAvatar(_index);
         }
 
@@ -54,6 +55,7 @@ namespace AvatarSelection
             if (_index < 0)
                 _index = _avatarContainers.Length - 1;
 
+            SoundManager.instance.PlaySFX(Enum_Sfx.PLACE_STONE3);
             ShowAvatar(_index);
         }
 
