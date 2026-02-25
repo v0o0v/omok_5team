@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using static Omok.Block;
 using static Omok.Constants;
 
 namespace Omok
@@ -27,10 +26,17 @@ namespace Omok
         private PlayerType[,] _board;
         private PlayerType currPlayerType = PlayerType.None;
 
+        private List<GameObject> placedBlocks = new List<GameObject>();
+
         public void initBoard(PlayerType[,] board = null)
         {
             _board = board;
         }
+
+        bool isKeyboard = false;
+
+        // 쓰기 전용 (클래스 내부에서만 읽기 가능)
+        public GameType _gameType { private get; set; }
 
         public void Update()
         {
@@ -57,10 +63,15 @@ namespace Omok
             } else if(Input.GetKeyDown(KeyCode.Space))
             {
                 // 빈자리가 아니면 return
-                if (_board[_x, _y] != PlayerType.None || IsForbiddenPosition(_x, _y))
-                    return;
-                    currPlayerType = (currPlayerType == PlayerType.Player1) ? PlayerType.Player2 :  PlayerType.Player1;
-                    PlaceMarker(_x, _y, currPlayerType);                
+                // if (_board[_x, _y] != PlayerType.None || IsForbiddenPosition(_x, _y))
+                //     return;
+                currPlayerType = (currPlayerType == PlayerType.Player1) ? PlayerType.Player2 :  PlayerType.Player1;
+                // PlaceMarker(_x, _y, currPlayerType);
+                // onBlockClicked?.Invoke(_x, _y);
+
+                // 키보드로 입력시에도 OnMouseUpAsButton 으로 처리 통합 - [leomanic]
+                isKeyboard = true;
+                OnMouseUpAsButton();             
             }
         }
 
@@ -77,6 +88,7 @@ namespace Omok
         public void PlaceMarker(int x, int y, Constants.PlayerType playerType)
         {
             Debug.Log($"Place Marker {x},{y}");
+            _x = x; _y = y; // 마우스로 클릭하거나 AI턴의 커서 위치 저장
             GameObject block = Instantiate(blockPrefab, transform);
 
             if (prevCursor != null)
@@ -125,11 +137,14 @@ namespace Omok
             int x = Mathf.RoundToInt(localPos.x / xOffset);
             int y = Mathf.RoundToInt(localPos.y / yOffset) * -1;
 
+            if(isKeyboard) { x = _x; y = _y; }
+
             // 금지 위치 일경우 무시처리
             if (IsForbiddenPosition(x, y))
                 return;
 
             onBlockClicked?.Invoke(x, y);
+            isKeyboard = false;
         }
 
         private bool IsForbiddenPosition(int x, int y)
