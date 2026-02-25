@@ -21,6 +21,9 @@ namespace AvatarSelection
         [SerializeField]
         private AvatarContainer[] _avatarContainers;
 
+        [SerializeField] 
+        private GameObject otherPanel;
+
         [Serializable]
         private class AvatarContainer
         {
@@ -42,9 +45,16 @@ namespace AvatarSelection
         /// </summary>
         public void OnNextButtonClicked()
         {
+            int checkIdx = CheckDuplicate();
             _index++;
-            if (_index >= _avatarContainers.Length)
-                _index = 0;
+            if(checkIdx !=_avatarContainers.Length && checkIdx == _index) _index++;
+            if(checkIdx !=0) {
+                if (_index >= _avatarContainers.Length)
+                    _index = 0;
+            } else if (_index >= _avatarContainers.Length)
+            {
+                _index = 1 ;
+            }
 
             SoundManager.instance.PlaySFX(Enum_Sfx.PLACE_STONE3);
             ShowAvatar(_index);
@@ -55,12 +65,38 @@ namespace AvatarSelection
         /// </summary>
         public void OnPrevButtonClicked()
         {
+            int checkIdx = CheckDuplicate();
             _index--;
+            if(checkIdx-1 !=0 && checkIdx == _index) _index--;
             if (_index < 0)
                 _index = _avatarContainers.Length - 1;
 
             SoundManager.instance.PlaySFX(Enum_Sfx.PLACE_STONE3);
             ShowAvatar(_index);
+        }
+
+        // 상대방 아바타와 중복 선택이 안되게 처리 - [leomanic] 
+        // [AvatarSelectionPanel_Left]<->[AvatarSelectionPanel_Right] 서로 비교
+        public int CheckDuplicate()
+        {
+            // 1. 상대방 패널 게임오브젝트에서 '스크립트'를 먼저 가져옵니다.
+            AvatarSelectionPanel otherPanelScript = otherPanel.GetComponent<AvatarSelectionPanel>();
+
+            if (otherPanelScript != null)
+            {
+                // 2. 해당 스크립트 내의 배열에 접근합니다.
+                // (단, _avatarContainers가 public이거나 public 프로퍼티가 있어야 합니다.)
+                var containers = otherPanelScript._avatarContainers; 
+                var count = containers.Length < _avatarContainers.Length ? containers.Length: _avatarContainers.Length;
+                for (int i = 0; i < count; i++) {
+                    if(containers[i].Avatar.gameObject.activeSelf)
+                    {
+                        // Debug.Log("other avatar idx = "+ i);
+                        return i;
+                    }
+                }
+            }
+            return -1;      
         }
 
         /// <summary>

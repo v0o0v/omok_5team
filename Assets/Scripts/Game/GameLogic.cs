@@ -141,7 +141,7 @@ namespace Omok
 
             GameManager.Instance.OpenContinuePanel(resultStr
                 , () => { GameManager.Instance.ChangeToMainScene(); }
-                , () => { GameManager.Instance.ChangeToGameScene(_gameType); }  // 계속 진행
+                , () => { GameManager.Instance.ChangeToGameScene(_gameType, true); }  // 계속 진행
             );
             HistoryManager.HistorySave(playerAState, playerBState, resultStr, history);
         }

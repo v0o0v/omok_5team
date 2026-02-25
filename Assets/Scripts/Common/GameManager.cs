@@ -119,6 +119,18 @@ namespace Omok
             }
         }
 
+        // 아바타 선택을 거치지 않는 게임 계속하기 용
+        public void ChangeToGameScene(GameType gameType, bool isContinue)
+        {
+            _gameType = gameType;
+
+            _avatarIDs[PlayerType.Player1] = _localDataStore.GetAvatarID();
+            _avatarIDs[PlayerType.Player2] =  _avatarIDs[PlayerType.Player2];
+
+
+            SceneManager.LoadScene("Game");
+        }
+
         public void ChangeToGameScene(IReadOnlyDictionary<PlayerType, string> avatarIDs)
         {
             foreach (var entry in avatarIDs)

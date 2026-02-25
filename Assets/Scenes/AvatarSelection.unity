@@ -2560,7 +2560,7 @@ GameObject:
   - component: {fileID: 1368098588}
   - component: {fileID: 1368098589}
   m_Layer: 5
-  m_Name: AvatarSelectionPanel (1)
+  m_Name: AvatarSelectionPanel_Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2618,6 +2618,7 @@ MonoBehaviour:
   - Name: "\uC544\uBC14\uD0C0_3"
     ID: AVATAR_3
     Avatar: {fileID: 13344755}
+  otherPanel: {fileID: 2017468675}
 --- !u!1 &1374864515
 GameObject:
   m_ObjectHideFlags: 0
@@ -4650,7 +4651,7 @@ GameObject:
   - component: {fileID: 2017468676}
   - component: {fileID: 2017468677}
   m_Layer: 5
-  m_Name: AvatarSelectionPanel
+  m_Name: AvatarSelectionPanel_Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4711,6 +4712,7 @@ MonoBehaviour:
   - Name: "\uC544\uBC14\uD0C0_4"
     ID: AVATAR_4
     Avatar: {fileID: 893404057}
+  otherPanel: {fileID: 1368098587}
 --- !u!1 &2137107500
 GameObject:
   m_ObjectHideFlags: 0
