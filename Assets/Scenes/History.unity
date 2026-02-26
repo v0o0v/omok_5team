@@ -1117,12 +1117,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 530472066}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dcf52d8dad1c4c31b3b033a826a7f3cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 57a61310af7d4c7188b95cff54a555ac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Omok.GamePanelController
-  playerAHud: {fileID: 0}
-  playerBHud: {fileID: 0}
-  _gameTypeName: {fileID: 0}
+  m_EditorClassIdentifier: Assembly-CSharp::Omok.HistoryGamePanelController
 --- !u!1 &639654425
 GameObject:
   m_ObjectHideFlags: 0
@@ -1517,8 +1514,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 530472070}
-        m_TargetAssemblyTypeName: Omok.GamePanelController, Assembly-CSharp
-        m_MethodName: OnClickBackButton2
+        m_TargetAssemblyTypeName: Omok.HistoryGamePanelController, Assembly-CSharp
+        m_MethodName: OnClickBackButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3393,54 +3390,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!1 &1722774295
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1722774297}
-  - component: {fileID: 1722774296}
-  m_Layer: 0
-  m_Name: R_GameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1722774296
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1722774295}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 577a8f244d1a48ce82cca1d7603ff4d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Tictactoe.GameManager
-  settingsPanelPrefab: {fileID: 4529054047275262898, guid: 9d3f2ef0a746ff54e82718a931181d9f, type: 3}
-  confirmPanelPrefab: {fileID: 4529054047275262898, guid: 9a49553597574914d80ba79cd659578c, type: 3}
-  _loop: {fileID: 0}
-  _localDataStore: {fileID: 0}
---- !u!4 &1722774297
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1722774295}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1790547827
 GameObject:
   m_ObjectHideFlags: 0
@@ -3885,7 +3834,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 530472070}
-        m_TargetAssemblyTypeName: Omok.GamePanelController, Assembly-CSharp
+        m_TargetAssemblyTypeName: Omok.HistoryGamePanelController, Assembly-CSharp
         m_MethodName: OnClickSettingsButton
         m_Mode: 1
         m_Arguments:
@@ -4250,6 +4199,5 @@ SceneRoots:
   - {fileID: 689736409}
   - {fileID: 1690645090}
   - {fileID: 1911895775}
-  - {fileID: 1722774297}
   - {fileID: 639654427}
   - {fileID: 1907959380}
