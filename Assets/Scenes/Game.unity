@@ -3408,8 +3408,8 @@ MonoBehaviour:
   _avatarRoot: {fileID: 2419543985408823169}
   _avatar: {fileID: 3634334308395310276}
   _playerNameText: {fileID: 1318151354}
-  _blackStoneSprite: {fileID: -657176979488108527, guid: 034253542045e6c4a99f458c57aad5ee, type: 3}
-  _whiteStoneSprite: {fileID: -7797825227586393410, guid: 034253542045e6c4a99f458c57aad5ee, type: 3}
+  _blackStoneSprite: {fileID: -7797825227586393410, guid: 034253542045e6c4a99f458c57aad5ee, type: 3}
+  _whiteStoneSprite: {fileID: -657176979488108527, guid: 034253542045e6c4a99f458c57aad5ee, type: 3}
   _stoneImage: {fileID: 1242856703}
   _avatarPrefabContainers:
   - ID: AVATAR_0
