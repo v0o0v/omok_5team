@@ -2796,6 +2796,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Tictactoe.GamePanelController
   playerAHud: {fileID: 5070116116108118979}
   playerBHud: {fileID: 1026419129655525032}
+  _gameTypeName: {fileID: 2111424494}
 --- !u!1 &2045978285
 GameObject:
   m_ObjectHideFlags: 0
@@ -3408,8 +3409,8 @@ MonoBehaviour:
   _avatarRoot: {fileID: 2419543985408823169}
   _avatar: {fileID: 3634334308395310276}
   _playerNameText: {fileID: 1318151354}
-  _blackStoneSprite: {fileID: -657176979488108527, guid: 034253542045e6c4a99f458c57aad5ee, type: 3}
-  _whiteStoneSprite: {fileID: -7797825227586393410, guid: 034253542045e6c4a99f458c57aad5ee, type: 3}
+  _blackStoneSprite: {fileID: -7797825227586393410, guid: 034253542045e6c4a99f458c57aad5ee, type: 3}
+  _whiteStoneSprite: {fileID: -657176979488108527, guid: 034253542045e6c4a99f458c57aad5ee, type: 3}
   _stoneImage: {fileID: 1242856703}
   _avatarPrefabContainers:
   - ID: AVATAR_0
