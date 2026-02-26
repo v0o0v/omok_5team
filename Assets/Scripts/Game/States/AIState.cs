@@ -25,7 +25,6 @@ namespace Omok.States
             {
                 HandleMove(gameLogic, result.Value.x, result.Value.y);
             }
-            gameLogic.IsInputLocked = false;
         }
 
         public override async void HandleMove(GameLogic gameLogic, int x, int y)
@@ -42,7 +41,9 @@ namespace Omok.States
         }
 
         public override void OnExit(GameLogic gameLogic)
-        { }
+        {
+            gameLogic.IsInputLocked = false;
+        }
 
     }
 
