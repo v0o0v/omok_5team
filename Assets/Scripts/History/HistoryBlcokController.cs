@@ -1,7 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Pool;
+using UnityEngine.UI;
 using static Omok.Constants;
 
 namespace Omok
@@ -12,13 +15,15 @@ namespace Omok
 
         [SerializeField] private float xOffset = 0.45f;
         [SerializeField] private float yOffset = 0.45f;
-        [SerializeField] private GameObject blockPrefab;
+        [SerializeField] private GameObject blockPrefab, historyPanel;
+        [SerializeField] private GameObject contentPanel;
 
         private PlayerType[,] _board = new PlayerType[BOARD_SIZE, BOARD_SIZE];
         private int index = 0;
         private HistorySheet historySheet;
         private List<GameObject> placedBlocks = new List<GameObject>();
         private ObjectPool<GameObject> blockPool;
+        private HistoryPanel lastSelectedPanel;
 
         private void Awake()
         {
@@ -36,12 +41,27 @@ namespace Omok
         private void Start()
         {
             List<string> historyFiles = HistoryManager.GetHistoryFiles();
+            
+            historyFiles = HistoryManager.GetHistoryFiles()
+                .OrderByDescending(f => File.GetLastWriteTime(f))
+                .ToList();
             foreach (var historyFile in historyFiles)
             {
-                Debug.Log("History File: " + historyFile);
+                var hs = HistoryManager.Load<HistorySheet>(historyFile);
+                var instantiate = Instantiate(historyPanel, contentPanel.transform);
+                HistoryPanel panelComponent = instantiate.GetComponent<HistoryPanel>();
+                panelComponent.Init(hs);
+                instantiate.GetComponent<Button>().onClick.AddListener(() =>
+                {
+                    lastSelectedPanel?.setOutline(false);
+                    ClearBoard();
+                    historySheet = hs;
+                    lastSelectedPanel = instantiate.GetComponent<HistoryPanel>();
+                    lastSelectedPanel?.setOutline(true);
+                });
             }
 
-            historySheet = HistoryManager.Load<HistorySheet>(historyFiles[0]);
+            
         }
 
         public void ProceedOneStep()
@@ -84,6 +104,16 @@ namespace Omok
             HistoryBlock blockComponent = block.GetComponent<HistoryBlock>();
             blockComponent.InitMarker(x, y, playerType, index + 1);
             placedBlocks.Add(block);
+        }
+        
+        public void ClearBoard()
+        {
+            foreach (var block in placedBlocks)
+            {
+                blockPool.Release(block);
+            }
+            placedBlocks.Clear();
+            index = 0;
         }
 
     }
