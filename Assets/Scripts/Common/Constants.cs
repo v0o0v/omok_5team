@@ -5,6 +5,7 @@
 
         public const string SCENE_MAIN = "Main";
         public const string SCENE_GAME = "Game";
+        public const string SCENE_HISTORY = "History";
         public const string SCENE_AVATAR_SELECTION = "AvatarSelection";
 
         public enum GameType { SinglePlay, DualPlay }

@@ -17,7 +17,7 @@ namespace Omok {
 
         // 기보 보기
         public void onClickGameRecordButton(){
-            GameManager.Instance.OpenSettingsPanel();
+            GameManager.Instance.ChangeToHistory();
         }
 
         // 설정 팝업
