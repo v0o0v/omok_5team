@@ -14,4 +14,12 @@ namespace Omok
         public const string Avatar3 = "AVATAR_3";
         public const string Avatar4 = "AVATAR_4";
     }
+    enum AVATAR_NAME
+    {
+        토순이, // "AVATAR_0";
+        달곰이, // "AVATAR_1";
+        양돌이, // "AVATAR_2";
+        냥냥이, // "AVATAR_3";
+        AI봇  // "AVATAR_4";
+    }
 }

@@ -109,7 +109,8 @@ namespace AvatarSelection
                 _avatarContainers[i].Avatar.gameObject.SetActive(i == index);
 
             _avatarContainers[index].Avatar.PlayAnimation(AvatarAnimationID.Wait);
-            _nameText.text = _avatarContainers[index].Name;
+            // _nameText.text = _avatarAContainers[index].Name;
+            _nameText.text = ((Omok.AVATAR_NAME)(index)).ToString();
         }
 
         public string GetSelectedAvatarID()
