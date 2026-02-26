@@ -12,6 +12,7 @@ namespace Omok
     {
         [SerializeField] private PlayerHud playerAHud;
         [SerializeField] private PlayerHud playerBHud;
+        [SerializeField] private TMPro.TMP_Text _gameTypeName;
 
         private void Start()
         {
@@ -79,6 +80,11 @@ namespace Omok
                 playerAHud.SetAvatar(avatarID);
             if (playerType == PlayerType.Player2)
                 playerBHud.SetAvatar(avatarID);
+        }
+
+        public void SetGameTypeName(string name)
+        {
+            _gameTypeName.text = name;
         }
     }
 }

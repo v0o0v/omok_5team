@@ -47,6 +47,8 @@ namespace Omok
                 if (_gameType == GameType.SinglePlay)
                     _gamePanelController.SetAvatar(PlayerType.Player2, AvatarID.Avatar4);
 
+                _gamePanelController.SetGameTypeName(_gameType == GameType.SinglePlay ? "싱글플레이" : "2인 플레이");
+
                 _gameLogic.Start();
             }
             else if (scene.name == SCENE_AVATAR_SELECTION)
