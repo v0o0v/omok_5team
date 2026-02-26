@@ -41,13 +41,18 @@ namespace Omok
         private void Start()
         {
             List<string> historyFiles = HistoryManager.GetHistoryFiles();
-            
-            historyFiles = HistoryManager.GetHistoryFiles()
-                .OrderByDescending(f => File.GetLastWriteTime(f))
-                .ToList();
+
+            List<(string fileName, HistorySheet sheet)> historyData = new List<(string, HistorySheet)>();
             foreach (var historyFile in historyFiles)
             {
                 var hs = HistoryManager.Load<HistorySheet>(historyFile);
+                historyData.Add((historyFile, hs));
+            }
+
+            historyData = historyData.OrderByDescending(h => h.sheet.dateTime).ToList();
+
+            foreach (var (fileName, hs) in historyData)
+            {
                 var instantiate = Instantiate(historyPanel, contentPanel.transform);
                 HistoryPanel panelComponent = instantiate.GetComponent<HistoryPanel>();
                 panelComponent.Init(hs);
@@ -60,8 +65,6 @@ namespace Omok
                     lastSelectedPanel?.setOutline(true);
                 });
             }
-
-            
         }
 
         public void ProceedOneStep()
