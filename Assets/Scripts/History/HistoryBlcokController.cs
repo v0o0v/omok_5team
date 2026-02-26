@@ -25,6 +25,7 @@ namespace Omok
         private ObjectPool<GameObject> blockPool;
         private HistoryPanel lastSelectedPanel;
 
+        private bool _isRoutine = false;
         private void Awake()
         {
             blockPool = new ObjectPool<GameObject>(
@@ -67,8 +68,15 @@ namespace Omok
             }
         }
 
-        public void ProceedOneStep()
+        public void ProceedOneStep(bool isRoutine = false)
         {
+            if(isRoutine && _isRoutine) {
+                SoundManager.instance.PlaySFX(Enum_Sfx.PLACE_STONE3);
+                _isRoutine = true;                
+            } else if(!isRoutine)
+            {
+                SoundManager.instance.PlaySFX(Enum_Sfx.PLACE_STONE3);
+            }
             if (index >= historySheet.moves.Count) return;
             Move move = historySheet.moves[index];
             PlaceMarker(move.X, move.Y, move.playerType);
@@ -77,14 +85,22 @@ namespace Omok
 
         public void ProceedAllStep()
         {
+            SoundManager.instance.PlaySFX(Enum_Sfx.PLACE_STONE3);
             while (index < historySheet.moves.Count)
             {
-                ProceedOneStep();
+                ProceedOneStep(true);
             }
+            _isRoutine = false;
         }
 
-        public void ProceedOneBackStep()
+        public void ProceedOneBackStep(bool isRoutine = false)
         {
+            if(isRoutine && _isRoutine) {
+                SoundManager.instance.PlaySFX(Enum_Sfx.PLACE_STONE3);
+                _isRoutine = true;                
+            } else if(!isRoutine) {
+                SoundManager.instance.PlaySFX(Enum_Sfx.PLACE_STONE3);
+            }
             if (index <= 0) return;
             index--;
             GameObject lastBlock = placedBlocks[placedBlocks.Count - 1];
@@ -94,10 +110,12 @@ namespace Omok
 
         public void ProceedAllBackStep()
         {
+            SoundManager.instance.PlaySFX(Enum_Sfx.PLACE_STONE3);
             while (index > 0)
             {
-                ProceedOneBackStep();
+                ProceedOneBackStep(true);
             }
+            _isRoutine = false;
         }
 
         public void PlaceMarker(int x, int y, PlayerType playerType)

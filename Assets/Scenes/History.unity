@@ -471,7 +471,7 @@ MonoBehaviour:
       - m_Target: {fileID: 639654428}
         m_TargetAssemblyTypeName: Omok.HistoryBlockController, Assembly-CSharp
         m_MethodName: ProceedOneBackStep
-        m_Mode: 1
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -4145,7 +4145,7 @@ MonoBehaviour:
       - m_Target: {fileID: 639654428}
         m_TargetAssemblyTypeName: Omok.HistoryBlockController, Assembly-CSharp
         m_MethodName: ProceedOneStep
-        m_Mode: 1
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
