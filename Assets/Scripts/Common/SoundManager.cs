@@ -119,4 +119,24 @@ public class SoundManager : MonoBehaviour
     {
         return bgmSource.enabled;
     }
+
+    public void SetBGMVolume(float value)
+    {
+        bgmSource.volume = value;
+    }
+
+    public void SetSFXVolume(float value)
+    {
+        sfxSource.volume = value;
+    }
+
+    public float GetBGMVolume()
+    {
+        return bgmSource.volume;
+    }
+
+    public float GetSFXVolume()
+    {
+        return sfxSource.volume;
+    }
 }
