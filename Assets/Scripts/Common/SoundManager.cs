@@ -26,7 +26,7 @@ public enum Enum_Sfx
 
 public class SoundManager : MonoBehaviour
 {
-public static SoundManager instance;
+    public static SoundManager instance;
 
     [Header("Audio Clips")]
     [SerializeField] private AudioClip[] bgmClips;  // BGM 클립 배열
@@ -98,5 +98,45 @@ public static SoundManager instance;
         {
             Debug.LogWarning("SFX not found in Dictionary!");
         }
+    }
+
+    public void EnableBGM(bool value)
+    {
+        bgmSource.enabled = value;
+    }
+
+    public void EnableSFX(bool value)
+    {
+        sfxSource.enabled = value;
+    }
+
+    public bool IsSFXEnabled()
+    {
+        return sfxSource.enabled;
+    }
+
+    public bool IsBGMEnabled()
+    {
+        return bgmSource.enabled;
+    }
+
+    public void SetBGMVolume(float value)
+    {
+        bgmSource.volume = value;
+    }
+
+    public void SetSFXVolume(float value)
+    {
+        sfxSource.volume = value;
+    }
+
+    public float GetBGMVolume()
+    {
+        return bgmSource.volume;
+    }
+
+    public float GetSFXVolume()
+    {
+        return sfxSource.volume;
     }
 }
