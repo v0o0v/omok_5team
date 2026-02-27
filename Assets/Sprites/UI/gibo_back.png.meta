@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: a0d278b39e3c1de42b1be42903eb0417
+guid: 13e6d8e1515df54489c8970d804b6e7f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1322687975876796359
-    second: Select_Back_0
+      213: 5917763828470354540
+    second: gibo_back_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Select_Back_0
+      name: gibo_back_0
       rect:
         serializedVersion: 2
         x: 0
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7cf11d6c4b12b5210800000000000000
-      internalID: 1322687975876796359
+      spriteID: c6291ac29de102250800000000000000
+      internalID: 5917763828470354540
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Select_Back_0: 1322687975876796359
+      gibo_back_0: 5917763828470354540
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
