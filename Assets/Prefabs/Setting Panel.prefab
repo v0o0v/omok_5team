@@ -1066,6 +1066,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tictactoe.SettingsPanelController
   panelTransform: {fileID: 4159432666256488875}
+  _sfxSwitchToggle: {fileID: 1441208425891754329}
+  _bgmSwitchToggle: {fileID: 147738744079930076}
 --- !u!1 &5002935261032355969
 GameObject:
   m_ObjectHideFlags: 0
@@ -1903,7 +1905,19 @@ MonoBehaviour:
   offColor: {r: 0.898, g: 0.898, b: 0.918, a: 1}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8075293082740792380}
+        m_TargetAssemblyTypeName: Omok.SettingsPanelController, Assembly-CSharp
+        m_MethodName: OnBGMToggleChanged
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8566961875479564967
 GameObject:
   m_ObjectHideFlags: 0
@@ -2226,7 +2240,19 @@ MonoBehaviour:
   offColor: {r: 0.898, g: 0.898, b: 0.918, a: 1}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8075293082740792380}
+        m_TargetAssemblyTypeName: Omok.SettingsPanelController, Assembly-CSharp
+        m_MethodName: OnSFXToggleChanged
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &9196608121659773144
 GameObject:
   m_ObjectHideFlags: 0
