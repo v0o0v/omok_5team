@@ -36,6 +36,13 @@ namespace Omok
                 GameManager.Instance.ChangeToMainScene();
             });
         }
+        public void OnClickBackButton2()
+        {
+            GameManager.Instance.OpenConfirmPanel("기보 보기를 종료합니다", () =>
+            {
+                GameManager.Instance.ChangeToMainScene();
+            });
+        }
 
         public void OnClickSettingsButton()
         {

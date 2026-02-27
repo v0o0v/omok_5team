@@ -1,7 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Pool;
+using UnityEngine.UI;
 using static Omok.Constants;
 
 namespace Omok
@@ -12,14 +15,17 @@ namespace Omok
 
         [SerializeField] private float xOffset = 0.45f;
         [SerializeField] private float yOffset = 0.45f;
-        [SerializeField] private GameObject blockPrefab;
+        [SerializeField] private GameObject blockPrefab, historyPanel;
+        [SerializeField] private GameObject contentPanel;
 
         private PlayerType[,] _board = new PlayerType[BOARD_SIZE, BOARD_SIZE];
         private int index = 0;
         private HistorySheet historySheet;
         private List<GameObject> placedBlocks = new List<GameObject>();
         private ObjectPool<GameObject> blockPool;
+        private HistoryPanel lastSelectedPanel;
 
+        private bool _isRoutine = false;
         private void Awake()
         {
             blockPool = new ObjectPool<GameObject>(
@@ -36,16 +42,41 @@ namespace Omok
         private void Start()
         {
             List<string> historyFiles = HistoryManager.GetHistoryFiles();
+
+            List<(string fileName, HistorySheet sheet)> historyData = new List<(string, HistorySheet)>();
             foreach (var historyFile in historyFiles)
             {
-                Debug.Log("History File: " + historyFile);
+                var hs = HistoryManager.Load<HistorySheet>(historyFile);
+                historyData.Add((historyFile, hs));
             }
 
-            historySheet = HistoryManager.Load<HistorySheet>(historyFiles[0]);
+            historyData = historyData.OrderByDescending(h => h.sheet.dateTime).ToList();
+
+            foreach (var (fileName, hs) in historyData)
+            {
+                var instantiate = Instantiate(historyPanel, contentPanel.transform);
+                HistoryPanel panelComponent = instantiate.GetComponent<HistoryPanel>();
+                panelComponent.Init(hs);
+                instantiate.GetComponent<Button>().onClick.AddListener(() =>
+                {
+                    lastSelectedPanel?.setOutline(false);
+                    ClearBoard();
+                    historySheet = hs;
+                    lastSelectedPanel = instantiate.GetComponent<HistoryPanel>();
+                    lastSelectedPanel?.setOutline(true);
+                });
+            }
         }
 
-        public void ProceedOneStep()
+        public void ProceedOneStep(bool isRoutine = false)
         {
+            if(isRoutine && _isRoutine) {
+                SoundManager.instance.PlaySFX(Enum_Sfx.PLACE_STONE3);
+                _isRoutine = true;                
+            } else if(!isRoutine)
+            {
+                SoundManager.instance.PlaySFX(Enum_Sfx.PLACE_STONE3);
+            }
             if (index >= historySheet.moves.Count) return;
             Move move = historySheet.moves[index];
             PlaceMarker(move.X, move.Y, move.playerType);
@@ -54,14 +85,22 @@ namespace Omok
 
         public void ProceedAllStep()
         {
+            SoundManager.instance.PlaySFX(Enum_Sfx.PLACE_STONE3);
             while (index < historySheet.moves.Count)
             {
-                ProceedOneStep();
+                ProceedOneStep(true);
             }
+            _isRoutine = false;
         }
 
-        public void ProceedOneBackStep()
+        public void ProceedOneBackStep(bool isRoutine = false)
         {
+            if(isRoutine && _isRoutine) {
+                SoundManager.instance.PlaySFX(Enum_Sfx.PLACE_STONE3);
+                _isRoutine = true;                
+            } else if(!isRoutine) {
+                SoundManager.instance.PlaySFX(Enum_Sfx.PLACE_STONE3);
+            }
             if (index <= 0) return;
             index--;
             GameObject lastBlock = placedBlocks[placedBlocks.Count - 1];
@@ -71,10 +110,12 @@ namespace Omok
 
         public void ProceedAllBackStep()
         {
+            SoundManager.instance.PlaySFX(Enum_Sfx.PLACE_STONE3);
             while (index > 0)
             {
-                ProceedOneBackStep();
+                ProceedOneBackStep(true);
             }
+            _isRoutine = false;
         }
 
         public void PlaceMarker(int x, int y, PlayerType playerType)
@@ -84,6 +125,16 @@ namespace Omok
             HistoryBlock blockComponent = block.GetComponent<HistoryBlock>();
             blockComponent.InitMarker(x, y, playerType, index + 1);
             placedBlocks.Add(block);
+        }
+        
+        public void ClearBoard()
+        {
+            foreach (var block in placedBlocks)
+            {
+                blockPool.Release(block);
+            }
+            placedBlocks.Clear();
+            index = 0;
         }
 
     }

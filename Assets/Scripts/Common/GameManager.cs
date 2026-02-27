@@ -150,6 +150,11 @@ namespace Omok
             SceneManager.LoadScene("Main");
         }
 
+        public void ChangeToHistory()
+        {
+            SceneManager.LoadScene("History");
+        }
+
     }
 
 }
