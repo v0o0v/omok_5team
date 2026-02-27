@@ -97,6 +97,7 @@ namespace Omok
         // Continue 버튼 추가된 ConfirmPanel - [leomanic]
         public void OpenContinuePanel(string message, Action onConfirm, Action onContinue)
         {
+            _timer.Stop();  // 타이머 종료 *(판정이 반복해서 뜨는 버그 방지)
             GameObject confirmPanel = Instantiate(confirmPanelPrefab, _canvas.transform);
             confirmPanel.GetComponent<ConfirmPanelController>().Show(message, onConfirm, onContinue);
         }
