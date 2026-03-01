@@ -153,7 +153,7 @@ namespace Omok
 
         public void ChangeToHistory()
         {
-            SceneManager.LoadScene("History");
+            SceneManager.LoadScene(SCENE_HISTORY);
         }
 
     }

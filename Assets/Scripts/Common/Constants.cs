@@ -7,6 +7,10 @@
         public const string SCENE_GAME = "Game";
         public const string SCENE_HISTORY = "History";
         public const string SCENE_AVATAR_SELECTION = "AvatarSelection";
+        public const string SINGLE_PLAY = "싱글 플레이";
+        public const string DUAL_PLAY = "2인 플레이";
+        public const string MULTI_PLAY = "멀티 플레이";
+
 
         public enum GameType { SinglePlay, DualPlay }
         
